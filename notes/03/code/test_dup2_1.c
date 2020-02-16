@@ -1,16 +1,16 @@
 #include <stdio.h>
 /*
 原来：
-    STDOUT_FILENO  ------->  终端
-    fd             ------->  test.txt
+    STDOUT_FILENO  ───────>  终端
+    fd             ───────>  test.txt
 
 ret_fd = dup2(fd, STDOUT_FILENO);
 (1) 关闭 STDOUT_FILENO
     STDOUT_FILENO            终端
-    fd             ------->  test.txt
+    fd             ───────>  test.txt
 (2) 
-    STDOUT_FILENO  -┐        终端
-    fd             -└----->  test.txt
+    STDOUT_FILENO  ─┐        终端
+    fd             ─┴─────>  test.txt
 (3) 返回 STDOUT_FILENO
 */
 
