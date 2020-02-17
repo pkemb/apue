@@ -9,6 +9,29 @@
 
 <table>
     <tr>
+        <td>基本操作</td>
+        <td>open creat close write read</td>
+    </tr>
+    <tr>
+        <td>原子读写</td>
+        <td>pwrite pread</td>
+    </tr>
+    <tr>
+        <td>描述符复制</td>
+        <td>dup dup2</td>
+    </tr>
+    <tr>
+        <td>缓冲区同步</td>
+        <td>sync fsync fdatasync</td>
+    </tr>
+    <tr>
+        <td>属性控制</td>
+        <td>fcntl ioctl</td>
+    </tr>
+</table>
+
+<table>
+    <tr>
         <th>序号</th>
         <th>类别</th>
         <th>函数</th>
