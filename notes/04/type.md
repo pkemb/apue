@@ -29,3 +29,9 @@ struct stat{
     blkcnt_t          st_blocks; /* bumber of disk blocks allocated */
 };
 ```
+
+<h2 id=pic_stat>
+    stat结构体成员及其对应的函数
+</h2>
+
+![stat结构体成员及其对应的函数](pic/stat结构体.png)
