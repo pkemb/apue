@@ -7,7 +7,7 @@
 [类型表](type.md "进入类型表")
 
 <h2 id=table_stat>
-    stat结构体成员及其对应的函数
+    stat结构体成员及其相关的函数
 </h2>
 
 <table>
@@ -109,4 +109,36 @@
     </tr>
 </table>
 
+<h2 id=table_dir>
+    与目录块有关的函数
+</h2>
+
+<table>
+    <tr><th>分类</th><th>函数</th></tr>
+    <tr>
+        <td>重命名文件</td>
+        <td>rename() renameat()</td>
+    </tr>
+    <tr>
+        <td>新建删除目录</td>
+        <td>mkdir() mkdirat() rmdir()</td>
+    </tr>
+    <tr>
+        <td rowspan="2">读目录</td>
+        <td>opendir() fdopendir() readdir()</td>
+    </tr>
+    <tr>
+        <td>rewinddir() closedir() relldir() seekdir()</td>
+    </tr>
+    <tr>
+        <td>创建符号链接</td>
+        <td>symlink() symlinkat()</td>
+    </tr>
+</table>
+
+<h2 id=pic_ufs>
+    UFS文件系统
+</h2>
+
+![UFS文件系统](pic/UFS文件系统.png)
 ----
