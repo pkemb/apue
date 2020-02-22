@@ -34,4 +34,7 @@ struct stat{
     stat结构体成员及其对应的函数
 </h2>
 
-![stat结构体成员及其对应的函数](pic/stat结构体.png)
+<div style="text-align:center">
+	<img src="pic/stat结构体.png" align=center />
+	<p>stat结构体成员及其对应的函数</p>
+</div>

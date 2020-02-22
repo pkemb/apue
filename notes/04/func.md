@@ -76,8 +76,8 @@
     <tr>
         <td>off_t st_size;</td>
         <td>以字节为单位的文件长度，只对普通文件、目录、符号链接有效。</td>
-        <th>\</th>
-        <th>\</th>
+        <td>文件截断</td>
+        <td>truncate() ftruncate()</td>
     </tr>
     <tr>
         <td>struct timespec st_atime;</td>
@@ -140,5 +140,12 @@
     UFS文件系统
 </h2>
 
-![UFS文件系统](pic/UFS文件系统.png)
+<div style="text-align:center">
+	<img src="pic/UFS文件系统.png" align=center />
+</div>
+
 ----
+
+[章节目录](../../README.md#title_ch04 "返回章节目录")
+[笔记](notes.md "进入笔记")
+[类型表](type.md "进入类型表")
