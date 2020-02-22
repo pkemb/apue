@@ -5,6 +5,7 @@ LDFLAGS =
 LDLIBS =
 
 PROGS += test_lstat
+PROGS += print_argv
 
 all: ${PROGS}
 
