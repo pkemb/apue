@@ -293,6 +293,235 @@ fchmodat()：
 2) 如果新文件的组ID不等于进程的有效组ID或者进程的附属组ID中的一个，而且进程没有root权限，那么S_ISGID会被自动关闭。
 > 新创建文件的组ID可能是父目录的组ID。
 
+<h2 id=ch_4.10>
+    粘着位
+</h2>
+
+S_ISVTX，`粘着位`（sticky bit），也称为`保存正文位`（saved-text bit）。对于设置了`粘着位`的可执行文件或目录，有以下效果：
+* 可执行文件
+> 程序第一次被执行，在其终止时，程序正文部分的一个副本仍被保存在交换区。这使得下次执行该程序时能够较快的将其载入内存。
+* 目录
+> 只有对该目录有写权限，并且满足下列条件之一，才能删除或重命名该目录下的文件：
+> * 拥有此文件
+> * 拥有此目录
+> * 是超级用户 
+> 
+> 典型应用：/tmp 目录。任何一个用户都可以在此目录创建文件，但是不能删除或重命名属于其他人的文件。
+
+<h2 id=ch_4.11>
+    函数 chown、fchown、fchownat 和 lchown
+</h2>
+
+```c
+int chown(const char *pathname, uid_t owner, gid_t group);
+int fchown(int fd, uid_t owner, git_t group);
+int fchownat(int fd, const char *pathname, uid_t owner, git_t group, int flag);
+int lchown(const char *pathname, uid_t owner, git_t group);
+
+头文件：unistd.h
+功能：更改文件的用户ID和组ID。
+      若owner/group对应的取值为-1，表示不更改。
+形参说明：
+    pathname：文件名。
+    owner：用户ID，若为-1，表示不更改。
+    group：组ID，若为-1，表示不更改。
+
+区别：
+    fchown()在一个已打开的文件上操作，所以不能改变符号链接的uid/gid。
+    lchown()更改符号链接本身的uid/gid。
+    fchownat()：
+        (1) pathname 是绝对路径，忽略参数fd。
+        (2) pathname 是相对路径，fd参数指出起始目录。
+        (3) pathname 是相对路径，fd参数是AT_FDCWD，起始目录是当前工作目录。
+        flag：若设置了AT_SYMLINK_NOFOLLOW位，表示更改符号链接本身的uid/gid。
+```
+
+若_POSIX_CHOWN_RESTRICTED对指定的文件生效，则：
+1) 只有超级用户进程能更改该文件的用户ID
+2) 普通进程可以更改属于自己的文件的gid，但只能更改到进程的有效组ID或附属组ID。
+
+非超级用户进程调用成功返回时，文件的设置用户ID位(`SUID`)设置组ID位(`SGID`)将被清除。
+
+
+<h2 id=ch_4.12>
+    文件长度
+</h2>
+
+* stat 结构成员 st_size 表示以字节为单位的文件长度。
+> * st_size 只对普通文件、目录文件和符号链接有意义。
+> * 普通文件：长度可以为0，在开始读取时，将得到文件结束标志（EOF）。
+> * 目录文件：通常是一个数（16或512）的整数倍。
+> * 符号链接：在文件名中的实际字节数。
+> * 部分系统对管道也定义了文件长度，表示可从管道中读取的字节数。
+* st_blksize：对文件IO较合适的块长度。
+* st_blocks：所分配的实际512字节块块数。
+> 并不是所有系统都是512B，此值是不可移植的。
+* 文件中的空洞：设置的偏移量超过文件尾端，并写入某些数据后照成的。
+
+查看文件大小的命令
+* ls -l 以字节为单位
+* du -s 以块为单位，一般情况下一块是512B
+* wc -c 计算文件中的字符数
+
+<h2 id=ch_4.13>
+    文件截断
+</h2>
+
+```c
+int truncate(const char *pathname, off_t length);
+int ftruncate(int fd, off_t length);
+
+头文件：unistd.h
+功能：将文件的长度截断为length。
+      如果length=0，可以在打开文件时指定 O_TRUNC 选项。
+形参说明：
+    pathname：
+    fd：
+    length：
+说明：
+length < old_length 文件缩小，超过 length 的部分将不可访问
+length > old_length 文件增加，old_length 和 length 之间的数据读为0。
+                    很有可能创建了一个空洞。
+```
+
+<h2 id=ch_4.14>
+    文件系统
+</h2>
+
+<h3>磁盘、分区和文件系统</h3>
+
+<div style="text-align:center">
+	<img src="pic/磁盘分区和文件系统.png" align=center />
+</div>
+
+* 磁盘
+> * 磁盘可以有多个分区，每个分区有不同的文件系统。
+> * 在一个分区中，有多个柱面。每个柱面，包含i节点数组、数据块、目录块。
+* 数据块
+> * 文件存储数据的地方
+> * 一个文件可以有多个数据块
+> * 一个数据块只能被一个文件所拥有
+* 目录块
+> * 存储目录文件数据的地方
+> * 由`目录项`构成，`目录项`包含i节点编号和文件名
+> * i节点编号可以理解为指向某个i节点，此i节点即为此目录下的文件。
+> * 指向的i节点与目录块必须在同一个分区。
+> * 有两个特殊的目录项：`.` 和 `..`。
+* i节点
+> * 包含了文件的大部分信息：文件类型、文件访问权限位、文件长度、指向文件数据块的指针。
+> * 链接计数(st_nlink)：指向此i节点的目录项。减为0，才会删除该文件。
+
+>> 由以上内容可以推出：
+任何一个叶目录（不含任何文件）的链接计数总是2，
+（1）命名该目录的目录项
+（2）该目录中的 . 目录
+
+<h3>UFS文件系统</h3>
+
+<div style="text-align:center">
+	<img src="pic/UFS文件系统.png" align=center />
+</div>
+
+<h2 id=ch_4.15>
+    函数link、linkat、unlink、unlinkat和remove
+</h2>
+
+```c
+int link(const char *existingpath, const char *newpath);
+int linkat(int efd, const char* existingpath, int nfd, const char*newpath, int flag);
+
+头文件：unistd.h
+功能：创建一个指向现有文件的链接。
+      创建一个新目录项newpath，引用现有文件existingpath。
+      existingpath所引用文件的链接计数加1。
+      如果newpath已经存在，则返回出错。
+返回值：成功返回0，出错返回-1。
+形参说明：
+    existingpath：现有目录项。
+    newpath：新目录项。
+    efd：
+        (1) existingpath为绝对路径，忽略efd。
+        (2) existingpath为相对路径，efd指明起始目录。
+        (3) existingpath为相对路径，efd为AT_FDCWD，起始目录为当前工作目录。
+    nfd：与efd类似。
+    flag：(假设 existingpath 是个符号链接，且指向toppath)
+        设置了 AT_SYMLINK_FOLLOW 标志
+            newpath => toppath
+            existingpath -> toppath
+        没有设置 AT_SYMLINK_FOLLOW 标志
+            newpath => existingpath -> toppath
+        => 硬链接，两个文件的inode相同
+        -> 软链接，两个文件的inode不同
+限制：
+(1) 无法跨文件系统
+(2) 只有root可以创建指向目录的硬链接
+```
+
+```c
+int unlink(const char* pathname);
+int unlinkat(int fd, const char* pathname, int flag);
+
+头文件：unistd.h
+功能：删除目录项，并将由pathname所引用文件的链接计数减1。
+      如果出错，不对该文件做任何更改。
+返回值：成功返回0，出错返回-1。
+形参说明：
+    pathname：
+        注：如果是符号链接，则删除符号链接本身，而不是指向的文件。
+    fd：略
+    flag：AT_REMOVEDIR 标志被设置时，unlinkat() 可以类似于rmdir()一样删除目录。
+         否则和unlink()执行同样的操作。
+权限要求：
+对包含该目录项的目录具有写和执行权限。
+如果目录设置了粘着位(S_ISVTX)，还要具备下列条件之一：
+拥有该文件；或拥有该目录；或具有超级用户权限。
+```
+
+> 删除一个文件（inode）的条件：
+> * 打开该文件的进程个数为0
+> * 指向该文件(inode)的目录项为0，即链接计数为0
+
+```c
+int remove(const char *pathname);
+
+头文件：stdio.h
+功能：对于文件，remove() 的功能与 unlink() 相同
+     对于目录，remove() 的功能与 redir() 相同
+返回值：成功返回0，出错返回-1。
+说明：
+    此函数由 ISO C 说明。
+    绝大多数非UNIX系统不支持文件链接。
+```
+
+<h2 id=ch_4.16>
+    函数 rename 和 renameat
+</h2>
+
+```c
+int rename(const char *oldname, const char *newname);
+int renameat(int oldfd, const char *oldname, int newfd, const char *newname);
+
+头文件：stdio.h
+功能：对文件或目录重命名。
+      ISO C对文件定义了rename() 函数，POSIX.1扩展了此标准，使其包含了目录和符号链接。
+形参说明：
+    oldname：
+    newname：
+    oldfd：
+    newfd：
+权限要求：
+    对包含oldname及包含newname的目录具有写和执行权限。
+```
+
+* oldname是文件或符号链接
+> 如果 newname 存在，`必须`不是一个目录。先将 newname 删除，然后将oldname重命名为 newname。
+* oldname 是目录
+> 如果 newname存在，`必须`是一个空目录。先将 newname 删除，然后将oldname重命名为 newname。 \
+> newname 不能包含 oldname 作为路径前缀。不能将 /usr/foo 重命名为 /usr/foo/testdir。
+* 如果 oldname 或 newname 引用符号链接，则处理的是符号链接本身，而不是引用的文件。
+* 不能对 . 和 .. 重命名。
+* 如果 oldname 和 newname 相同，不做任何更改，直接成功返回。
+
 ---
 
 [章节目录](../../README.md#title_ch04 "返回章节目录")
