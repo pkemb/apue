@@ -522,6 +522,92 @@ int renameat(int oldfd, const char *oldname, int newfd, const char *newname);
 * 不能对 . 和 .. 重命名。
 * 如果 oldname 和 newname 相同，不做任何更改，直接成功返回。
 
+<h2 id=ch_4.17>
+    符号链接
+</h2>
+
+* 符号链接是对一个文件的间接指针.
+* 符号链接文件本身，只是存储了目标文件的路径。
+* 使用以名字引用文件的函数时，应当了解该函数是否跟随符号链接到达它所链接的文件。
+> 注意：可以创建一个符号链接，指向一个不存在的文件。如果使用跟随符号链接的函数访问此符号链接，将会出错。
+* 使用符号链接可能会在文件系统中引用循环。大多数查找路径名的函数在这种情况发生时都将出错返回，errno等于ELOOP。
+
+跟随符号链接：access() chdir() chmod() chown() creat() exec() link() open() opendir() pathconf() stat() truncate()
+
+不跟随符号链接：lchown() lstat() readlink() remove() rename() unlink()
+
+<h2 id=ch_4.18>
+    创建和读取符号链接
+</h2>
+
+```c
+int symlink(const char *actualpath, const char *sympath);
+int symlinkat(const char *actualpath, int fd, const char *sympath);
+
+头文件：unistd.h
+功能：创建一个指向actualpath的新目录项sympath。
+返回值：成功返回0，出错返回-1。
+形参说明：
+    actualpath：
+    sympath：
+    fd：
+    (1) sympath是绝对路径，忽略此参数。
+    (2) sympath是相对路径，fd 指出起始目录。
+    (3) sympath是相对路径，fd 等于 AT_FDCWD，起始目录是当前工作目录。
+说明：
+    在创建此符号链接时，并不要求actualpath已经存在。
+```
+
+
+```c
+ssize_t readlink(const char *pathname, char *buf, size_t bufsize)
+ssize_t readlinkat(int fd, const char *pathname, char *buf, size_t bufsize)
+
+头文件：unistd.h
+功能：打开符号链接本身，并读该链接中的名字。
+返回值：若成功，返回读取的字节数；若出错，返回-1。
+形参说明：
+    pathname：
+    buf：返回读取到的名字，不以null字节终止。
+    bufsize：buf的长度。
+    fd：略。
+```
+
+<h2 id=4.19>
+    文件的时间
+</h2>
+
+每个文件维护3个时间字段，际精度依赖于文件系统的实现。
+
+<table>
+    <tr><th>字段</th><th>说明</th><th>例子</th><th>ls选项</th></tr>
+    <tr>
+        <td>st_atime</td>
+        <td>文件数据的最后访问时间</td>
+        <td>read</td>
+        <td>-u</td>
+    </tr>
+    <tr>
+        <td>st_mtime</td>
+        <td>文件数据的最后修改时间</td>
+        <td>write</td>
+        <td>默认</td>
+    </tr>
+    <tr>
+        <td>st_ctime</td>
+        <td>i节点状态的最后更改时间</td>
+        <td>chmod() chown()</td>
+        <td>-c</td>
+    </tr>
+</table>
+
+* 注意 st_mtime 和 st_ctime 的区别。
+> i节点和文件数据是分开存放的。
+* 系统并不维护对i节点的最后一次访问时间，
+> access() 和 stat() 不更改以上任何一个时间。
+* 当修改一个文件(目录)的时候，还有可能会影响其父目录的时间。
+
+
 ---
 
 [章节目录](../../README.md#title_ch04 "返回章节目录")
