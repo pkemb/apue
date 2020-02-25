@@ -45,3 +45,8 @@
 
 > 简介
 
+<h2 id=title_layout_err>
+    <a href="notes/layout_err.md">
+        排版错误记录
+    </a>
+</h2>
