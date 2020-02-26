@@ -608,6 +608,186 @@ ssize_t readlinkat(int fd, const char *pathname, char *buf, size_t bufsize)
 * 当修改一个文件(目录)的时候，还有可能会影响其父目录的时间。
 
 
+<h2 id=ch_4.20>
+    函数futimens、utimensat和utimes
+</h2>
+
+```c
+int futimens(int fd, const struct timespec times[2]);
+int utimensat(int fd, const char *path, const struct timespec times[2], int flag);
+
+头文件：sys/stat.h
+功能：更改一个文件的访问和修改时间。
+返回值：成功返回0，出错返回-1。
+形参说明：
+    times[0]：返回时间
+    times[1]：修改时间
+    (1) times为空指针，st_atim和st_mtim都设置为当前时间。
+    (2) times非空指针，tv_nsec=UTIME_NOW，相应的时间戳设置为当前时间。
+    (3) tv_nsec 的值为 UTIME_OMIT，相应的时间戳不变。
+    (4) tv_nsec 既不是 UTIME_NOW ，也不是 UTIME_OMIT，
+        相应的时间戳设置为相应的 tv_sec tv_nsec。
+权限要求：
+    如果要更改文件的时间，则进程的有效ID要等于文件的所有者ID，
+    需要有写权限。
+    或者进程具有root权限。
+```
+
+两个函数的区别：
+* futimens()需要打开文件来更改，utimensat()使用文件名更改。
+> utimensat()函数的fd参数：略。
+* futimens()无法更改符号链接本身的时间，utimensat()可以通过flag参数来控制。
+> flag如果设置了AT_SYMLINK_NOFOLLOW标志，则符号链接本身的时间会被修改。默认的行为是跟随符号链接，并把文件的时间改成符号链接的时间。
+
+```c
+int utimes(const char *pathname, const struct timeval times[2]);
+
+头文件：sys/time.h
+功能：更改一个文件的访问和修改时间。
+返回值：成功返回0，出错返回-1。
+形参说明：
+    pathname：
+    times：两个时间戳用秒和微秒表示。
+    struct timeval {
+        time_t tv_sec;   /* second */
+        long   tv_usec;  /* microseconds */
+    }
+```
+
+***注意：不能对状态更改时间t_ctim指定一个值，调用这些函数时，st_ctim会自动更新。***
+
+<h2 id=ch_4.20>
+    函数mkdir、mkdirat和rmdir
+</h2>
+
+```c
+int mkdir(const char *pathname, mode_t mode);
+int mkdirat(int fd, const char *pathname, mode_t mode);
+
+头文件：sys/stat.h
+返回值：成功返回0，出错返回-1。
+功能：创建一个新的空目录，. 和 .. 目录项是自动创建的。
+形参说明：
+    pathname：
+    mode：文件访问权限，由文件模式创建屏蔽字(umask)修改。
+          对目录通常至少要设置一个执行权限位，
+          以访问该目录中的文件名。
+    fd：略。
+新目录的UID和GID：
+    UID：进程的有效用户ID。
+    GID：进程的有效组ID或父目录的组ID。
+```
+
+```c
+int rmdir(const char *name);
+
+头文件：unistd.h
+返回值：成功返回0，出错返回-1。
+功能：删除一个空目录，只包含 . 和 .. 的目录。
+形参说明：
+    pathname：
+说明：
+    此函数使目录的链接计数成为0，
+    如果没有其他进程打开此目录，则释放此目录占用的空间。
+
+    否则，删除最后一个链接，删除目录项.和..，在此目录中不能新建文件。
+```
+
+<h2 id=ch_4.22>
+    读目录
+</h2>
+
+* 对某个目录具有访问权限的任一用户都可以读该目录。
+* 只有内核能够写目录。
+* 对目录的写、执行权限，只是代表能在此目录中新建、删除文件，不代表写目录本身。
+
+> 由于各个平台，目录的格式各不相同，为了简化读目录的过程，UNIX包含了一套与目录有关的例程，是 POSIX.1的一部分。
+
+```c
+头文件：dirent.h
+
+打开目录（从文件名或文件描述符）：
+DIR *opendir(const char *pathname);
+DIR *fdopendir(int fd);
+    返回值：若成功返回指针，出错返回NULL。
+
+读取一个目录项：
+struct dirent *readdir(DIR *dp);
+    返回值：成功返回指针；在目录尾或出错返回NULL。
+
+复位目录项偏移量：
+void rewinddir(DIR *dp);
+
+关闭打开的目录：
+int closedir(DIR *dp);
+    返回值：成功返回0，出错返回-1。
+
+获取目录偏移量：
+long telldir(DIR *dp);
+    返回值：
+
+void seekdir(DIR *dp, long loc);
+```
+
+struct dirent结构体至少包含以下两个成员：
+```c
+struct dirent {
+    ino_t d_ino;       /* i-node number */
+    char  d_name[]     /* null-terminated filename */
+}
+d_name的大小没有指定，但是必须保证能包含NAME_MAX个字节。
+```
+
+<h2 id=ch_4.23>
+    函数chdir、fchdir和getcwd
+</h2>
+
+* 当前工作目录：`进程`的一个属性，是所有相对路径名的起点
+* 用户的起始目录：`登录名`的一个属性，/etc/passwd文件的第6个字段
+
+```c
+int chdir(const char *pathname);
+int fchdir(int fd);
+
+头文件：unistd.h
+返回值：成功返回0，出错返回-1。
+功能：
+    更改当前的工作目录，chdir()跟随符号链接。
+注意：
+    当前工作目录是进程的属性，
+    chdir/fchdir 只会影响当前的进程。
+    所以 cd 命令内建在 shell 中。
+```
+
+```c
+char *getcwd(char *buf, size_t size);
+
+头文件：unistd.h
+返回值：若成功返回buf，出错返回NULL。
+功能：获取当前的工作目录完整的绝对路径名。
+形参说明：
+    buf：返回路径名。
+    size：buf的长度。
+注意：
+    buf必须有足够大的长度，
+    来容纳绝对路径名再加上一个NULL字符，
+    否则返回NULL。
+```
+回到当前工作目录的方法：
+* getcwd 获取绝对路径，随后利用chdir跳转回来
+* open当前目录，随后利用 fchdir 跳转回来。
+
+*可以尝试看一下pwd的源码*
+
+<h2 id=ch_4.24>
+    设备特殊文件
+</h2>
+
+* 文件系统所在的存储设备都由主、次设备号表示，设备号使用数据类型 dev_t 表示。主设备号标识设备驱动程序，次设备号标识特定的子设备。
+* 通常可以使用 major 访问主设备号，minor 访问次设备号。
+* 系统中与每个文件名关联的 st_dev 是文件系统的设备号，该文件系统包含了文件名和i节点。
+* 只有字符特殊设备和块特殊设备才有 st_rdev，此值包含实际设备的设备号。
+
 ---
 
 [章节目录](../../README.md#title_ch04 "返回章节目录")
