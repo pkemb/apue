@@ -31,8 +31,11 @@ int fstatat(int fd, const char *pathname, struct stat *buf, int flag);
     (1)pathname是绝对路径，忽略fd参数。
     (2)pathname是相对路径，开始地址是 fd 指向的目录。
     (3)pathname是相对路径，fd 参数等于 AT_FDCWD，开始地址是 当前工作目录。
-示例代码：
 ```
+
+示例代码：
+
+<a href="code/test_lstat.c">lstat()</a>
 
 <h2 id=ch_4.3>
     文件类型
@@ -82,6 +85,14 @@ int fstatat(int fd, const char *pathname, struct stat *buf, int flag);
         <td>S_ISLNK() S_IFLNK</td>
     </tr>
 </table>
+
+```c
+示例代码：
+    struct stat sta = {0};
+    /* init stat from file */
+    if (S_ISREG(sta.st_mode))
+        printf("regular file\n");
+```
 
 <h2 id=ch_4.4>
     设置用户ID (SUID) 和设置组ID (SGID)
@@ -223,6 +234,10 @@ int faccessat(int fd, const char *pathname, int mode, int flag);
     <tr><td>F_OK</td><td>测试文件是否存在</td></tr>
 </table>
 
+示例代码：
+
+<a href="code/test_access.c">test_access.c</a>
+
 <h2 id=ch_4.8>
     函数 umask
 </h2>
@@ -239,6 +254,10 @@ mode_t umask(mode_t cmask);
 ```
 
 > 在shell中，可用umask命令查看或设置文件模式创建屏蔽字。
+
+示例代码：
+
+<a href="code/test_umask.c">test_umask.c</a>
 
 <h2 id=ch_4.9>
     函数 chmod、fchmod、fchmodat
