@@ -7,6 +7,7 @@ LDLIBS =
 PROGS += test_lstat
 PROGS += print_argv
 PROGS += test_access
+PROGS += test_umask
 
 all: ${PROGS}
 
