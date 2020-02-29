@@ -8,6 +8,7 @@ PROGS += test_lstat
 PROGS += print_argv
 PROGS += test_access
 PROGS += test_umask
+PROGS += test_getcwd
 
 all: ${PROGS}
 

@@ -926,6 +926,8 @@ char *getcwd(char *buf, size_t size);
 
 *可以尝试看一下pwd的源码*
 
+示例代码：<a href="code/test_getcwd.c">test_getcwd.c</a>
+
 <a href="#file_notes">回顶部</a>
 
 ---
