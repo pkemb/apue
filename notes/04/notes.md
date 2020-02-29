@@ -8,6 +8,58 @@
 
 ---
 
+<h2 id=toc>
+    目录
+</h2>
+
+<a href="#ch_4.2" title="title">函数stat、fstat、fstatat、lstat</a>
+
+<a href="#ch_4.3" title="title">文件类型</a>
+
+<a href="#ch_4.4" title="title">设置用户ID和设置组ID</a>
+
+<a href="#ch_4.5" title="title">文件访问权限</a>
+
+<a href="#ch_4.6" title="title">新文件和目录的所有权</a>
+
+<a href="#ch_4.7" title="title">函数access和faccessat</a>
+
+<a href="#ch_4.8" title="title">函数umask</a>
+
+<a href="#ch_4.9" title="title">函数chmod、fchmod和fchmodat</a>
+
+<a href="#ch_4.10" title="title">粘着位</a>
+
+<a href="#ch_4.11" title="title">函数chown、fchown、fchownat和lchown</a>
+
+<a href="#ch_4.12" title="title">文件长度</a>
+
+<a href="#ch_4.13" title="title">文件截断</a>
+
+<a href="#ch_4.14" title="title">文件系统</a>
+
+<a href="#ch_4.15" title="title">函数link、linkatunlink、unlinkat和remove</a>
+
+<a href="#ch_4.16" title="title">函数rename和renameat</a>
+
+<a href="#ch_4.17" title="title">符号链接</a>
+
+<a href="#ch_4.18" title="title">创建和读取符号链接</a>
+
+<a href="#ch_4.19" title="title">文件的时间</a>
+
+<a href="#ch_4.20" title="title">函数futimens、utimensat和utimes</a>
+
+<a href="#ch_4.21" title="title">函数mkdir、mkdirat和rmdir</a>
+
+<a href="#ch_4.22" title="title">读目录</a>
+
+<a href="#ch_4.23" title="title">函数chdir、fchdir和getcwd</a>
+
+<a href="#ch_4.24" title="title">设备特殊文件</a>
+
+---
+
 <h2 id=ch_4.2>
     函数stat、fstat、fstatat、lstat
 </h2>
@@ -33,9 +85,11 @@ int fstatat(int fd, const char *pathname, struct stat *buf, int flag);
     (3)pathname是相对路径，fd 参数等于 AT_FDCWD，开始地址是 当前工作目录。
 ```
 
-示例代码：
+示例代码：<a href="code/test_lstat.c">lstat()</a>
 
-<a href="code/test_lstat.c">lstat()</a>
+<a href="#file_notes">回顶部</a>
+
+---
 
 <h2 id=ch_4.3>
     文件类型
@@ -94,6 +148,10 @@ int fstatat(int fd, const char *pathname, struct stat *buf, int flag);
         printf("regular file\n");
 ```
 
+<a href="#file_notes">回顶部</a>
+
+---
+
 <h2 id=ch_4.4>
     设置用户ID (SUID) 和设置组ID (SGID)
 </h2>
@@ -137,6 +195,10 @@ int fstatat(int fd, const char *pathname, struct stat *buf, int flag);
 有效组ID也是类似的。
 
 SUID 和 SGID 存储在 stat 结构体中的 st_mode 成员中。可用宏 S_ISUID() S_ISGID() 测试。
+
+<a href="#file_notes">回顶部</a>
+
+---
 
 <h2 id=ch_4.5>
     文件访问权限
@@ -191,6 +253,10 @@ SUID 和 SGID 存储在 stat 结构体中的 st_mode 成员中。可用宏 S_ISU
 > 注：如果（2）测试失败，则（3）和（4）不会测试；其他类似。 \
 > 适当的访问权限是指：若进程为读而打开该文件，则用户读位应为1。其他类似。
 
+<a href="#file_notes">回顶部</a>
+
+---
+
 <h2 id=ch_4.6>
     新文件和目录的所有权
 </h2>
@@ -200,6 +266,10 @@ SUID 和 SGID 存储在 stat 结构体中的 st_mode 成员中。可用宏 S_ISU
 1) 进程的有效组ID
 2) 所在目录的组ID（可以做到向下传递权限）
 > 对于Linux来说，如果目录的设置组ID位（`SGID`）被设置，则是(2)；否则(1)。
+
+<a href="#file_notes">回顶部</a>
+
+---
 
 <h2 id=ch_4.7>
 函数 access 和 faccessat
@@ -234,9 +304,11 @@ int faccessat(int fd, const char *pathname, int mode, int flag);
     <tr><td>F_OK</td><td>测试文件是否存在</td></tr>
 </table>
 
-示例代码：
+示例代码：<a href="code/test_access.c">test_access.c</a>
 
-<a href="code/test_access.c">test_access.c</a>
+<a href="#file_notes">回顶部</a>
+
+---
 
 <h2 id=ch_4.8>
     函数 umask
@@ -255,9 +327,11 @@ mode_t umask(mode_t cmask);
 
 > 在shell中，可用umask命令查看或设置文件模式创建屏蔽字。
 
-示例代码：
+示例代码：<a href="code/test_umask.c">test_umask.c</a>
 
-<a href="code/test_umask.c">test_umask.c</a>
+<a href="#file_notes">回顶部</a>
+
+---
 
 <h2 id=ch_4.9>
     函数 chmod、fchmod、fchmodat
@@ -312,6 +386,10 @@ fchmodat()：
 2) 如果新文件的组ID不等于进程的有效组ID或者进程的附属组ID中的一个，而且进程没有root权限，那么S_ISGID会被自动关闭。
 > 新创建文件的组ID可能是父目录的组ID。
 
+<a href="#file_notes">回顶部</a>
+
+---
+
 <h2 id=ch_4.10>
     粘着位
 </h2>
@@ -326,6 +404,10 @@ S_ISVTX，`粘着位`（sticky bit），也称为`保存正文位`（saved-text 
 > * 是超级用户 
 > 
 > 典型应用：/tmp 目录。任何一个用户都可以在此目录创建文件，但是不能删除或重命名属于其他人的文件。
+
+<a href="#file_notes">回顶部</a>
+
+---
 
 <h2 id=ch_4.11>
     函数 chown、fchown、fchownat 和 lchown
@@ -361,6 +443,9 @@ int lchown(const char *pathname, uid_t owner, git_t group);
 
 非超级用户进程调用成功返回时，文件的设置用户ID位(`SUID`)设置组ID位(`SGID`)将被清除。
 
+<a href="#file_notes">回顶部</a>
+
+---
 
 <h2 id=ch_4.12>
     文件长度
@@ -382,6 +467,10 @@ int lchown(const char *pathname, uid_t owner, git_t group);
 * du -s 以块为单位，一般情况下一块是512B
 * wc -c 计算文件中的字符数
 
+<a href="#file_notes">回顶部</a>
+
+---
+
 <h2 id=ch_4.13>
     文件截断
 </h2>
@@ -402,6 +491,10 @@ length < old_length 文件缩小，超过 length 的部分将不可访问
 length > old_length 文件增加，old_length 和 length 之间的数据读为0。
                     很有可能创建了一个空洞。
 ```
+
+<a href="#file_notes">回顶部</a>
+
+---
 
 <h2 id=ch_4.14>
     文件系统
@@ -440,6 +533,10 @@ length > old_length 文件增加，old_length 和 length 之间的数据读为0�
 <div style="text-align:center">
 	<img src="pic/UFS文件系统.png" align=center />
 </div>
+
+<a href="#file_notes">回顶部</a>
+
+---
 
 <h2 id=ch_4.15>
     函数link、linkat、unlink、unlinkat和remove
@@ -512,6 +609,10 @@ int remove(const char *pathname);
     绝大多数非UNIX系统不支持文件链接。
 ```
 
+<a href="#file_notes">回顶部</a>
+
+---
+
 <h2 id=ch_4.16>
     函数 rename 和 renameat
 </h2>
@@ -541,6 +642,10 @@ int renameat(int oldfd, const char *oldname, int newfd, const char *newname);
 * 不能对 . 和 .. 重命名。
 * 如果 oldname 和 newname 相同，不做任何更改，直接成功返回。
 
+<a href="#file_notes">回顶部</a>
+
+---
+
 <h2 id=ch_4.17>
     符号链接
 </h2>
@@ -554,6 +659,10 @@ int renameat(int oldfd, const char *oldname, int newfd, const char *newname);
 跟随符号链接：access() chdir() chmod() chown() creat() exec() link() open() opendir() pathconf() stat() truncate()
 
 不跟随符号链接：lchown() lstat() readlink() remove() rename() unlink()
+
+<a href="#file_notes">回顶部</a>
+
+---
 
 <h2 id=ch_4.18>
     创建和读取符号链接
@@ -592,6 +701,10 @@ ssize_t readlinkat(int fd, const char *pathname, char *buf, size_t bufsize)
     fd：略。
 ```
 
+<a href="#file_notes">回顶部</a>
+
+---
+
 <h2 id=4.19>
     文件的时间
 </h2>
@@ -626,6 +739,9 @@ ssize_t readlinkat(int fd, const char *pathname, char *buf, size_t bufsize)
 > access() 和 stat() 不更改以上任何一个时间。
 * 当修改一个文件(目录)的时候，还有可能会影响其父目录的时间。
 
+<a href="#file_notes">回顶部</a>
+
+---
 
 <h2 id=ch_4.20>
     函数futimens、utimensat和utimes
@@ -675,6 +791,10 @@ int utimes(const char *pathname, const struct timeval times[2]);
 
 ***注意：不能对状态更改时间t_ctim指定一个值，调用这些函数时，st_ctim会自动更新。***
 
+<a href="#file_notes">回顶部</a>
+
+---
+
 <h2 id=ch_4.20>
     函数mkdir、mkdirat和rmdir
 </h2>
@@ -711,6 +831,10 @@ int rmdir(const char *name);
 
     否则，删除最后一个链接，删除目录项.和..，在此目录中不能新建文件。
 ```
+
+<a href="#file_notes">回顶部</a>
+
+---
 
 <h2 id=ch_4.22>
     读目录
@@ -757,6 +881,10 @@ struct dirent {
 d_name的大小没有指定，但是必须保证能包含NAME_MAX个字节。
 ```
 
+<a href="#file_notes">回顶部</a>
+
+---
+
 <h2 id=ch_4.23>
     函数chdir、fchdir和getcwd
 </h2>
@@ -798,6 +926,10 @@ char *getcwd(char *buf, size_t size);
 
 *可以尝试看一下pwd的源码*
 
+<a href="#file_notes">回顶部</a>
+
+---
+
 <h2 id=ch_4.24>
     设备特殊文件
 </h2>
@@ -806,6 +938,8 @@ char *getcwd(char *buf, size_t size);
 * 通常可以使用 major 访问主设备号，minor 访问次设备号。
 * 系统中与每个文件名关联的 st_dev 是文件系统的设备号，该文件系统包含了文件名和i节点。
 * 只有字符特殊设备和块特殊设备才有 st_rdev，此值包含实际设备的设备号。
+
+<a href="#file_notes">回顶部</a>
 
 ---
 
