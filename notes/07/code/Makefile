@@ -5,6 +5,7 @@ LDFLAGS =
 LDLIBS =
 
 PROGS += test_environ
+PROGS += test_getenv
 
 all: ${PROGS}
 
