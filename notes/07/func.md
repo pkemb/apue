@@ -33,7 +33,55 @@
         <td>4</td>
         <td>int atexit(void (*func)(void));</td>
         <td>stdlib.h</td>
-        <td>/</td>
+        <td>\</td>
+    </tr>
+    <tr>
+        <td>5</td>
+        <td>void *malloc(size_t size);</td>
+        <td>stdlib.h</td>
+        <td>\</td>
+    </tr>
+    <tr>
+        <td>6</td>
+        <td>void *calloc(size_t nobj, size_t size);</td>
+        <td>stdlib.h</td>
+        <td>\</td>
+    </tr>
+    <tr>
+        <td>7</td>
+        <td>void *realloc(void *ptr, size_t newsize);</td>
+        <td>头文件</td>
+        <td>newsize 是新存储区的长度，不是新、就存储区长度之差。</td>
+    </tr>
+    <tr>
+        <td>8</td>
+        <td>void free(void *ptr);</td>
+        <td>stdlib.h</td>
+        <td>\</td>
+    </tr>
+    <tr>
+        <td>9</td>
+        <td>char *getenv(const char *name);</td>
+        <td>stdlib.h</td>
+        <td>获取环境变量</td>
+    </tr>
+    <tr>
+        <td>10</td>
+        <td>int putenv(char *ptr);</td>
+        <td>stdlib.h</td>
+        <td>设置环境变量</td>
+    </tr>
+    <tr>
+        <td>11</td>
+        <td>int setenv(const char *name, const char*value, int rewrite);</td>
+        <td>stdlib.h</td>
+        <td>设置环境变量</td>
+    </tr>
+    <tr>
+        <td>12</td>
+        <td>int unsetenv(const char *name);</td>
+        <td>stdlib.h</td>
+        <td>删除环境变量name</td>
     </tr>
     <tr>
         <td>序号</td>
