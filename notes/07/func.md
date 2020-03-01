@@ -50,7 +50,7 @@
     <tr>
         <td>7</td>
         <td>void *realloc(void *ptr, size_t newsize);</td>
-        <td>头文件</td>
+        <td>stdlib.h</td>
         <td>newsize 是新存储区的长度，不是新、就存储区长度之差。</td>
     </tr>
     <tr>
@@ -84,9 +84,27 @@
         <td>删除环境变量name</td>
     </tr>
     <tr>
-        <td>序号</td>
-        <td>函数原型</td>
-        <td>头文件</td>
-        <td>说明</td>
+        <td>13</td>
+        <td>int setjmp(jmp_buf env);</td>
+        <td>setjmp.h</td>
+        <td>\</td>
+    </tr>
+    <tr>
+        <td>14</td>
+        <td>void longjmp(jmp_buf env, int val);</td>
+        <td>setjmp.h</td>
+        <td>\</td>
+    </tr>
+    <tr>
+        <td>15</td>
+        <td>int getrlimit(int resource, struct rlimit *rlptr);</td>
+        <td>sys/resource.h</td>
+        <td>\</td>
+    </tr>
+    <tr>
+        <td>16</td>
+        <td>int setrlimit(int resource const struct rlimit *rlptr);</td>
+        <td>sys/resource.h</td>
+        <td>\</td>
     </tr>
 </table>

@@ -212,6 +212,135 @@ int unsetenv(const char *name);
 
 示例代码：<a href="code/test_getenv.c">test_getenv.c</a>
 
+
+<h2 id=ch_7.10>
+    函数setjmp和longjmp
+</h2>
+
+* 非局部goto，在栈上跳过若干调用帧，返回到当前`函数调用路径`上的某一个函数。
+* 通常用于处理发生在很深层嵌套函数调用中的出错情况。
+
+```c
+#include <setjmp.h>
+int setjmp(jmp_buf env);
+    返回值：直接调用返回0；从longjmp返回，则为非0。
+void longjmp(jmp_buf env, int val);
+
+形参说明：
+    env：存放在调用longjmp时能用来恢复栈状态的所有信息，通常定义为全局变量。
+    val：setjmp的返回值。通过不同的值，可以判断出在不同的位置返回。
+使用说明：
+    在希望返回到的位置调用setjmp()，相当于设置一个锚点。
+    在希望返回的位置，调用longjmp()，跳过多个栈帧。
+```
+
+longjmp()对变量取值的影响：
+* 全局变量、静态变量（static）、易失变量（volatile）不受影响，在longjmp之后，它们的值是最近所呈现的值。
+* 自动变量（局部变量）和寄存器变量（register）的值是不确定的。
+* `声明自动变量的函数返回后，不能再引用这些自动变量。`
+
+<h2 id=ch_7.11>
+    函数getrlimit和setrlimit
+</h2>
+
+每个进程都有一些资源限制，其中一些可以使用getrlimit函数查询，setrlimit函数更改。
+
+```c
+#include <sys/resource.h>
+int getrlimit(int resource, struct rlimit *rlptr);
+int setrlimit(int resource, const struct rlimit *rlptr);
+
+返回值：成功返回0，出错返回非0。
+形参说明：
+    resource：
+    rlptr：
+
+struct rlimit {
+    rlim_t rlim_cur;    /* soft limit: current limit */
+    rlim_t rlim_max;    /* hard limit: maximum value for rlim_cur */
+};
+```
+
+一些说明：
+* 任何一个进程可以将软限制值更改为小于或等于硬限制值。
+* 任何一个进程可以降低硬限制值，但不能小于软限制值。
+* 只有超级用户可以提高硬限制值。
+* 资源限制影响到调用进程并由其之进程继承。
+  * 所以bash内置ulimit命令，cshell内置limit命令。
+* 常量 RLIM_INFINITY 指定了一个无限量的限制。
+
+<table>
+    <tr><th>资源</th><th>说明</th></tr>
+    <tr>
+        <td>RLIMIT_AS</td>
+        <td>进程总的可用存储空间的最大长度（字节）。这影响到sbrk函数和mmap函数。</td>
+    </tr>
+    <tr>
+        <td>RLIMIT_CORE</td>
+        <td>core文件的最大字节数，若其值为0则阻止创建core文件。</td>
+    </tr>
+    <tr>
+        <td>RLIMIT_CPU</td>
+        <td>CPU时间的最大值（秒），当超过其软限制时，向该进程发送SIGXCPU信号。</td>
+    </tr>
+    <tr>
+        <td>RLIMIT_DATA</td>
+        <td>数据段的最大字节长度。初始化数据、非初始化及堆的总和。</td>
+    </tr>
+    <tr>
+        <td>RLIMIT_FSIZE</td>
+        <td>可以创建的文件的最大字节长度。当超过此软限制时，则向该进程发送SIGXFSZ信号。</td>
+    </tr>
+    <tr>
+        <td>RLIMIT_MEMLOCK</td>
+        <td>一个进程使用mlock能够锁定在存储空间中的最大字节长度。</td>
+    </tr>
+    <tr>
+        <td>RLIMIT_MSGQUEUE</td>
+        <td>进程为POSIX消息队列可分配的最大存储字节数。</td>
+    </tr>
+    <tr>
+        <td>RLIMIT_NICE</td>
+        <td>nice值可设置的最大限制。</td>
+    </tr>
+    <tr>
+        <td>RLIMIT_NOFILE</td>
+        <td>每个进程能打开的最多文件数。更改此限制将影响到sysconf函数在参数_SC_OPEN_MAX中返回的值。</td>
+    </tr>
+    <tr>
+        <td>RLIMIT_NPROC</td>
+        <td>每个实际用户ID可拥有的最大子进程数。更改此限制将影响到sysconf函数在参数_SC_CHILD_MAX中的返回值。</td>
+    </tr>
+    <tr>
+        <td>RLIMIT_NPTS</td>
+        <td>用户可同时打开的伪终端的最大数量。</td>
+    </tr>
+    <tr>
+        <td>RLIMIT_RSS</td>
+        <td>最大驻内存集字节长度（resident set size in bytes, RSS）。如果可用的物理内存非常少，则内核将从进程处取回超过RSS的部分。</td>
+    </tr>
+    <tr>
+        <td>RLIMIT_SBSIZE</td>
+        <td>在任一给定时刻，一个用户可以占用的套接字缓冲区的最大长度（字节）。</td>
+    </tr>
+    <tr>
+        <td>RLIMIT_SIGPENDING</td>
+        <td>一个进程可排队的信号最大数量。这个限制是sigqueue函数实施的。</td>
+    </tr>
+    <tr>
+        <td>RLIMIT_STACK</td>
+        <td>栈的最大字节长度。</td>
+    </tr>
+    <tr>
+        <td>RLIMIT_SWAP</td>
+        <td>用户可消耗的交换空间的最大字节数。</td>
+    </tr>
+    <tr>
+        <td>RLIMIT_VMEM</td>
+        <td>这是RLIMIT_AS的同义词。</td>
+    </tr>
+</table>
+
 ---
 
 [章节目录](../../README.md#title_ch07 "返回章节目录")
