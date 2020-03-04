@@ -54,6 +54,8 @@
 * 使用以上函数需要包含头文件 unistd.h
 * 都没有出错返回。
 
+示例代码：<a href="code/test_getpid.c">test_getpid.c</a>
+
 <h2 id=ch_8.3>
     函数 fork
 </h2>
@@ -86,6 +88,8 @@ fort的两种常见用法：
 * 子进程不继承父进程设置的文件锁。
 * 子进程的未处理闹钟被清楚。
 * 子进程的未处理信号集设置为空集。
+
+示例代码：<a href="code/test_fork.c">test_fork.c</a>
 
 ---
 
