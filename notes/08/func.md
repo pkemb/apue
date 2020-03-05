@@ -52,6 +52,12 @@
         <td>创建一个新进程。</td>
     </tr>
     <tr>
+        <td>8</td>
+        <td>pid_t vfork(void);</td>
+        <td>unistd.h</td>
+        <td>创建一个新进程。</td>
+    </tr>
+    <tr>
         <td>序号</td>
         <td>函数原型</td>
         <td>头文件</td>
