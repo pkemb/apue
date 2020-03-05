@@ -1,6 +1,7 @@
 #include <unistd.h>
 #include <stdio.h>
 #include <stdlib.h>
+#include <errno.h>
 
 int child_process(void *arg);
 
@@ -11,7 +12,12 @@ int main()
     printf("before fork\n");
 
     child = fork();
-    if (child == 0)
+    if (child < 0)
+    {
+        printf("fork error, errno = %d\n", errno);
+        exit(errno);
+    }
+    else if (child == 0)
     {
         // child process
         child_process(NULL);
