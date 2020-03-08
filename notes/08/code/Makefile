@@ -7,6 +7,7 @@ LDLIBS =
 PROGS += test_getpid
 PROGS += test_fork
 PROGS += test_vfork
+PROGS += test_wait
 
 all: ${PROGS}
 
