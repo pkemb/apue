@@ -1,6 +1,6 @@
 
 CC = gcc
-CFLAGS = -I../.. -Wall
+CFLAGS = -I../.. -Wall -Wno-div-by-zero
 LDFLAGS = 
 LDLIBS =
 
@@ -8,6 +8,7 @@ PROGS += test_getpid
 PROGS += test_fork
 PROGS += test_vfork
 PROGS += test_wait
+PROGS += test_waitpid
 
 all: ${PROGS}
 
