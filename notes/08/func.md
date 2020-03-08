@@ -58,6 +58,24 @@
         <td>创建一个新进程。</td>
     </tr>
     <tr>
+        <td>9</td>
+        <td>void exit(int status);</td>
+        <td>stdlib.h</td>
+        <td>/</td>
+    </tr>
+    <tr>
+        <td>10</td>
+        <td>pid_t wait(int *status);</td>
+        <td>sys/wait.h</td>
+        <td>获取子进程的终止状态。</td>
+    </tr>
+    <tr>
+        <td>11</td>
+        <td>pid_t waitpid(pid_t pid, int *status, int options);</td>
+        <td>sys/wait.h</td>
+        <td>获取子进程的终止状态。</td>
+    </tr>
+    <tr>
         <td>序号</td>
         <td>函数原型</td>
         <td>头文件</td>
