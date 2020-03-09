@@ -9,6 +9,7 @@ PROGS += test_fork
 PROGS += test_vfork
 PROGS += test_wait
 PROGS += test_waitpid
+PROGS += test_waitid
 
 all: ${PROGS}
 
