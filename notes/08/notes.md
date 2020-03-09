@@ -240,6 +240,118 @@ options参数：
 
 示例代码：<a href=code/test_wait.c>test_wait.c</a> <a href=code/test_waitpid.c>test_waitpid.c</a>
 
+<h2 id=ch_8.7>
+    函数 waitid
+</h2>
+
+类似于waitpid，但是提供了更多的灵活性。
+
+```c
+int waitid(idtype_t idtype, id_t id, siginfo_t *infop, int options);
+
+头文件：sys/wait.h
+返回值：成功返回0，出错返回-1。(不是返回子进程ID)
+功能：获取进程终止状态。
+形参说明：
+    idtype 决定等待的进程，与 id 配合使用。
+    infop 包含了造成子进程状态改变有关信号的详细信息。
+```
+
+idtype的取值如下表：
+
+<table>
+    <tr><th>常量</th><th>说明</th></tr>
+    <tr>
+        <td>P_PID</td>
+        <td>等待一特定进程，id包含要等待子进程的进程ID。</td>
+    </tr>
+    <tr>
+        <td>P_PGID</td>
+        <td>等待一特定进程组中的任一子进程，id包含要等待子进程的进程组ID。</td>
+    </tr>
+    <tr>
+        <td>P_ALL</td>
+        <td>等待任一子进程，忽略id。</td>
+    </tr>
+</table>
+
+options参数是下表参数按位或运算得到：
+
+<table>
+    <tr><th>常量</th><th>说明</th></tr>
+    <tr>
+        <td>WCONTINUED</td>
+        <td>等待一进程，它以前曾被停止，此后又继续，但其状态尚未报告。</td>
+    </tr>
+    <tr>
+        <td>WEXITED</td>
+        <td>等待已退出的进程。</td>
+    </tr>
+    <tr>
+        <td>WNOHANG</td>
+        <td>如无可用的子进程退出状态，立即返回而非阻塞。</td>
+    </tr>
+    <tr>
+        <td>WNOWAIT</td>
+        <td>不破坏子进程退出状态，该子进程退出状态可由后续的wait、waitid或waitpid调用取得。</td>
+    </tr>
+    <tr>
+        <td>WSTOPPED</td>
+        <td>等待一进程，它已经停止，但其状态尚未报告。</td>
+    </tr>
+</table>
+
+*注：WCONTINUED、WEXITED、WATOPPED之一必须指定。*
+
+示例代码：<a href="code/test_waitid.c">test_waitid.c</a>
+
+<h2 id=ch_8.8>
+    函数 wait3 和 wait4
+</h2>
+
+比 wait / waitpid / waitid 的功能多一个：可以返回`终止进程`及其`所有子进程`使用的资源概况。资源统计信息包括 用户CPU时间总量，系统CPU时间总量，缺页次数，接收到信号的次数等。
+
+```c
+pid_t wait3(int *status, int options, struct rusage *rusage);
+pid_t wait4(pid_t pid, int *status, int options, struct rusage *rusage);
+
+头文件：sys/types.h
+       sys/wait.h
+       sys/time.h
+       sys/resource.h
+返回值：成功返回进程id，出错返回-1。
+形参说明：
+    pid：参考 waitpid()。
+    status：参考wait()或waitpid()。
+    options：参考 waitpid()或waitid()。
+    rusage：进程的资源使用概况。
+```
+
+wait3可以对标 wait，wait4可以对标 waitpid。
+
+```c
+struct rusage {
+    struct timeval ru_utime; /* user time used */
+    struct timeval ru_stime; /* system time used */
+    long ru_maxrss;
+    #define ru_first ru_ixrss
+    long ru_ixrss; /* XXX: 0 */
+    long ru_idrss; /* XXX: sum of rm_asrss */
+    long ru_isrss; /* XXX: 0 */
+    long ru_minflt; /* any page faults not requiring I/O */
+    long ru_majflt; /* any page faults requiring I/O */
+    long ru_nswap; /* swaps */
+    long ru_inblock; /* block input operations */
+    long ru_oublock; /* block output operations */
+    long ru_msgsnd; /* messages sent */
+    long ru_msgrcv; /* messages received */
+    long ru_nsignals; /* signals received */
+    long ru_nvcsw; /* voluntary context switches */
+    long ru_nivcsw; /* involuntary ” */
+    #define ru_last ru_nivcsw
+};
+```
+
 ---
 
 [章节目录](../../README.md#title_ch08 "返回章节目录")

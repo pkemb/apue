@@ -76,6 +76,30 @@
         <td>获取子进程的终止状态。</td>
     </tr>
     <tr>
+        <td>12</td>
+        <td>int waitid(idtype_t idtype, id_t id, siginfo_t *infop, int options);</td>
+        <td>sys/wait.h</td>
+        <td>/</td>
+    </tr>
+    <tr>
+        <td>13</td>
+        <td>pid_t wait3(int *status, int options, struct rusage *rusage);</td>
+        <td>sys/types.h<br>
+            sys/wait.><br>
+            sys/time.h<br>
+            sys/resource.h</td>
+        <td>/</td>
+    </tr>
+    <tr>
+        <td>14</td>
+        <td>pid_t wait4(pid_t pid, int *status, int options, struct rusage *rusage);</td>
+        <td>sys/types.h<br>
+            sys/wait.><br>
+            sys/time.h<br>
+            sys/resource.h</td>
+        <td>/</td>
+    </tr>
+    <tr>
         <td>序号</td>
         <td>函数原型</td>
         <td>头文件</td>
