@@ -100,6 +100,48 @@
         <td>/</td>
     </tr>
     <tr>
+        <td>15</td>
+        <td>int execl(const char *pathname, const char *arg0, ... /* (char*)0 */);</td>
+        <td>unistd.h</td>
+        <td>/</td>
+    </tr>
+    <tr>
+        <td>16</td>
+        <td>int execv(const char *pathname, char *const argv[]);</td>
+        <td>unistd.h</td>
+        <td>/</td>
+    </tr>
+    <tr>
+        <td>17</td>
+        <td>int execle(const char *pathname, const char *arg, ... /* (char *)0, char *const envp[] */);</td>
+        <td>unistd.h</td>
+        <td>/</td>
+    </tr>
+    <tr>
+        <td>18</td>
+        <td>int execve(const char *pathname, char *const argv[], char *const envp[]);</td>
+        <td>unistd.h</td>
+        <td>/</td>
+    </tr>
+    <tr>
+        <td>19</td>
+        <td>int execlp(const char *filename, const char *arg0, ... /* (char*)0 */);</td>
+        <td>unistd.h</td>
+        <td>/</td>
+    </tr>
+    <tr>
+        <td>20</td>
+        <td>int execvp(const char *filename, char *const argv[]);</td>
+        <td>unistd.h</td>
+        <td>/</td>
+    </tr>
+    <tr>
+        <td>21</td>
+        <td>int fexecve(int fd, char *const argv[], char *const envp[]);</td>
+        <td>unistd.h</td>
+        <td>/</td>
+    </tr>
+    <tr>
         <td>序号</td>
         <td>函数原型</td>
         <td>头文件</td>

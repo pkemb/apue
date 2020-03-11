@@ -352,6 +352,56 @@ struct rusage {
 };
 ```
 
+<h2 id=ch_8.9>
+    竞争条件
+</h2>
+
+竞争条件：当多个进程都企图对共享数据进行某种处理，而最后的结果又取决于`进程的运行顺序`。
+
+例如，fork之后，以某种逻辑显示或隐式地依赖于父进程先运行，还是子进程先运行。
+
+为了避免竞争条件，在多个进程之间需要有某种形式的信号发送和接收的方法。在UNIX中，可以使用信号机制。
+
+<h2 id=ch_8.10>
+    函数exec
+</h2>
+
+* 用来执行另外一个程序，新程序从其main函数开始执行。
+* exec只是用磁盘上的一个新程序替换了当前的正文段、数据段、堆段和栈段。
+* 因为exec不创建新进程，所以进程ID不会发生变化。
+
+```c
+#include <unistd.h>
+
+int execl(const char *pathname, const char *arg0, ... /* (char*)0 */);
+int execv(const char *pathname, char *const argv[]);
+int execle(const char *pathname, const char *arg, ... /* (char *)0, char *const envp[] */);
+int execve(const char *pathname, char *const argv[], char *const envp[]);
+int execlp(const char *filename, const char *arg0, ... /* (char*)0 */);
+int execvp(const char *filename, char *const argv[]);
+int fexecve(int fd, char *const argv[], char *const envp[]);
+
+返回值：出错返回-1，成功 不返回 。
+```
+
+七个函数之间的区别：
+* 前四个函数取路径名作为参数，后两个函数取文件名作为参数，最后一个取文件描述符作为参数。
+> * 如果filename中包含/，则视为路径名。否则在PATH指定的目录中查找。
+* 参数表的传递不同，l 表示 list，v 表示 vector。
+> * execl/execlp/execle要求将新程序的每个命令行参数都说明为一个单独的参数，参数表以空指针结尾。
+> * execv/execve/execvp/fexecve要求先构造一个指向各参数的指针数组，该数组地址作为参数。
+* 向新程序传递环境表的方式不同。
+> * 以e结尾的函数execle/execve/fexecve可以传递一个指针数组，指定环境变量。
+> * 其他的函数，execl/execv/execlp/execvp，继承调用进程的 environ 变量。
+
+利用函数中的字母记忆：
+* p 取filename作为参数，并且用PATH环境变量寻找可执行文件。
+* l 取一个参数表，与 v 互斥。
+* v 取一个向量。
+* e 取 envp[] 数组，而不使用当前环境。
+
+
+
 ---
 
 [章节目录](../../README.md#title_ch08 "返回章节目录")
