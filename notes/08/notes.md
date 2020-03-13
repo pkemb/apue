@@ -400,7 +400,26 @@ int fexecve(int fd, char *const argv[], char *const envp[]);
 * v 取一个向量。
 * e 取 envp[] 数组，而不使用当前环境。
 
+新程序从调用进程继承的属性
+* 进程ID和父进程ID。
+* 实际用户ID和实际组ID
+* 附属组ID，进程组ID
+* 回话ID，控制终端
+* 闹钟尚预留的时间
+* 当前工作目录，根目录
+* 文件模式创建屏蔽字
+* 文件锁
+* 进程信号屏蔽
+* 未处理信号
+* 资源限制
+* nice值
+* tms_utime tms_stime tms_cutime tms_cstime
 
+对文件描述符的处理：若设置了FD_CLOEXEC标志位，则关闭；否则打开。默认保持描述符打开。
+
+进程的有效ID：取决于程序文件的SUID是否设置。如果设置了，有效ID变为程序文件所有者ID。否则不变。有效组ID类似。
+
+示例代码：<a href="code/test_exec.c">test_exec.c</a>
 
 ---
 
