@@ -511,6 +511,37 @@ interpreter.file arga argb
 * 解释器文件在效率方面提供了好处。
 * 解释器文件让我们可以使用`/bin/sh`以外的其他shell来编写shell脚本。
 
+<h2 id=ch_8.13>
+    函数 system
+</h2>
+
+```c
+#include <stdlib.h>
+
+int system(const char *cmdstrings);
+```
+
+可以很方便的在程序中执行一个命令字符串。其对操作系统的依赖很强。
+
+system 在其实现中调用了 fork exec waitpid，因此有三种返回值：
+* fork失败或waitpid返回出EINTR之外的出错，则system返回-1，并且设置errno。
+* 如果exec失败，则其返回值如同shell执行exit(127)。
+* 三个函数都执行成功，那么system的返回值是shell的终止状态。
+
+使用 system 的优点：system进行了所需的各种出错处理以及各种信号处理。
+
+一个安全漏洞：设置了SUID的程序，调用了system函数，其权限在fork和exec之后仍被保持下来。
+* 以特殊权限运行的程序，应当使用 fork exec，并且在fork之后，exec之前改回普通权限。
+* SUID和SGID的程序，绝对不能调用system函数。
+```
+假如普通用户user执行程序文件suid_test，所有者是root，suid置位。
+此时：
+ruid: user
+euid: root
+
+假如suid_test调用system函数执行程序program，默认情况下，exec不改变ruid和euid，所以特权会被继承下来。
+```
+
 ---
 
 [章节目录](../../README.md#title_ch08 "返回章节目录")
