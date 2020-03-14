@@ -142,6 +142,42 @@
         <td>/</td>
     </tr>
     <tr>
+        <td>22</td>
+        <td>int setuid(uid_t uid);</td>
+        <td>unistd.h</td>
+        <td>更改ruid euid resuid</td>
+    </tr>
+    <tr>
+        <td>23</td>
+        <td>int setgid(git_t gid);</td>
+        <td>unistd.h</td>
+        <td>更改rgid egid resgid</td>
+    </tr>
+    <tr>
+        <td>24</td>
+        <td>int setreuid(uid_t ruid, uid_t euid);</td>
+        <td>unistd.h</td>
+        <td>交换用户ID和有效用户ID</td>
+    </tr>
+    <tr>
+        <td>25</td>
+        <td>int setregid(gid_t rgid, gid_t egid);</td>
+        <td>unistd.h</td>
+        <td>交换组ID和有效组ID</td>
+    </tr>
+    <tr>
+        <td>26</td>
+        <td>int seteuid(uid_t uid);</td>
+        <td>unistd.h</td>
+        <td>更改有效用户ID</td>
+    </tr>
+    <tr>
+        <td>27</td>
+        <td>int setegid(gid_t gid);</td>
+        <td>unistd.h</td>
+        <td>更改有效组ID</td>
+    </tr>
+    <tr>
         <td>序号</td>
         <td>函数原型</td>
         <td>头文件</td>

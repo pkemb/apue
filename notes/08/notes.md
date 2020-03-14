@@ -421,6 +421,62 @@ int fexecve(int fd, char *const argv[], char *const envp[]);
 
 示例代码：<a href="code/test_exec.c">test_exec.c</a>
 
+<h2 id=ch_8.11>
+    更改用户ID和更改组ID
+</h2>
+
+三种ID：
+* 实际用户/组ID  ruid rgid
+* 有效用户/组ID  euid egid
+* 保存的设置用户/组ID  resuid resgid
+
+```c
+#include <unistd.h>
+int setuid(uid_t uid);
+int setgid(gid_t gid);
+
+返回值：成功返回0，出错返回-1。
+```
+
+更改用户ID的规则：
+* 若进程具有root权限，setuid将`实际用户ID`、`有效用户ID`、`保存的设置用户ID`都设置为`uid`。
+* 若进程没有root权限，但是uid等于`实际用户ID`或`保存的设置用户ID`，则将有效用户ID设置为uid。
+> 将实际用户ID或保存的设置用户ID传递给有效用户ID。
+* 若都不满足，则将errno设置为 EPERM，并返回-1。
+* 保存的设置用户ID是exec从有效用户ID复制的。
+* 程序文件设置了SUID位时，exec会将有效ID更改为文件的UID。否则euid不变。
+
+总结：
+* 实际用户ID
+  * root通过setuid()设置为任意ID。
+* 有效用户ID
+  * root通过setuid设置为任意ID。
+  * 普通用户从实际用户ID，或保存的设置用户ID获取。
+  * 程序文件设置了SUID位时，exec设置为程序文件的UID。
+* 保存的设置用户ID
+  * root通过setuid()设置为任意ID。
+  * exec从有效用户ID复制。
+
+```c
+#include <unistd.h>
+
+int setreuid(uid_t ruid, uid_t euid);
+int setregid(gid_t rgid, gid_t egid);
+返回值：成功返回0，出错返回-1。
+```
+
+规则：一个非特权用户总是能够交换实际用户ID和有效用户ID。
+
+```c
+#include <unistd.h>
+
+int seteuid(uid_t uid);
+int setegid(gid_t gid);
+返回值：成功返回0，出错返回-1。
+```
+
+
+
 ---
 
 [章节目录](../../README.md#title_ch08 "返回章节目录")
