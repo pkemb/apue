@@ -475,7 +475,41 @@ int setegid(gid_t gid);
 返回值：成功返回0，出错返回-1。
 ```
 
+<h2 id=ch_8.11>
+    解释器文件
+</h2>
 
+解释器文件，interpreter file，文本文件，起始行的格式如下：
+```
+#! pathname [option argument]
+```
+
+* 解释器文件：文本文件，起始行以`#!`开头。
+* 解释器：解释器文件第一行的 pathname，通常为绝对路径。
+* exec系统调用，会识别解释器文件。
+* exec实际上执行的是解释器(pathname)，而不是解释器文件。
+
+例子：假设解释器文件`interpreter.file`的文件内容为：
+```
+#! /path/to/interpreter arg1 arg2
+...
+```
+按以下命令执行解释器文件：
+```
+interpreter.file arga argb
+```
+相当于执行以下命令：
+```
+/path/to/interpreter arg1 arg2 interpreter.file arga argb
+```
+
+部分解释器提供`-f`选项，表示从文件读取程序。例如 awk。
+
+解释器的优缺点：
+* 内核增加了额外的开销。
+* 可以隐藏程序文件是脚本的事实。
+* 解释器文件在效率方面提供了好处。
+* 解释器文件让我们可以使用`/bin/sh`以外的其他shell来编写shell脚本。
 
 ---
 
