@@ -184,6 +184,12 @@
         <td>在程序中执行一个命令字符串。</td>
     </tr>
     <tr>
+        <td>29</td>
+        <td>char *getlogin(void);</td>
+        <td>unistd.h</td>
+        <td>说获取登录名。</td>
+    </tr>
+    <tr>
         <td>序号</td>
         <td>函数原型</td>
         <td>头文件</td>

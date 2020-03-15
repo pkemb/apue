@@ -544,6 +544,27 @@ euid: root
 
 示例代码：<a href="code/test_system.c">test_system.c</a>
 
+<h2 id=ch_8.14>
+    进程会计
+</h2>
+
+*待填坑，实在没看懂说啥。*
+
+<h2 id=ch_8.15>
+    用户标识
+</h2>
+
+```c
+#include <unistd.h>
+
+char *getlogin(void);
+
+功能：获取运行该程序用户的登录名。
+      如果进程没有连接到用户登录时所用的终端，则函数会失败。
+```
+
+示例代码：<a href="code/test_getlogin.c">test_getlogin.c</a>
+
 ---
 
 [章节目录](../../README.md#title_ch08 "返回章节目录")
