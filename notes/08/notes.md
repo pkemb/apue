@@ -606,6 +606,8 @@ int setpriority(int which, id_t who, int value);
 
 子进程是否继承父进程的nice值取决于实现。Linux子进程从父进程中继承nice值。
 
+测试代码：<a href="code/test_nice.c">test_nice.c</a>
+
 ---
 
 [章节目录](../../README.md#title_ch08 "返回章节目录")
