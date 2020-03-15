@@ -190,6 +190,24 @@
         <td>说获取登录名。</td>
     </tr>
     <tr>
+        <td>30</td>
+        <td>int nice(int incr);</td>
+        <td>unistd.h</td>
+        <td>设置进程的nice值。</td>
+    </tr>
+    <tr>
+        <td>31</td>
+        <td>int getpriority(int which, id_t who);</td>
+        <td>sys/resource.h</td>
+        <td>获取进程的nice值。</td>
+    </tr>
+    <tr>
+        <td>32</td>
+        <td>int setpriority(int which, id_t who, int value);</td>
+        <td>sys/resource.h</td>
+        <td>设置进程的nice值。</td>
+    </tr>
+    <tr>
         <td>序号</td>
         <td>函数原型</td>
         <td>头文件</td>

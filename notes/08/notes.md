@@ -565,6 +565,47 @@ char *getlogin(void);
 
 示例代码：<a href="code/test_getlogin.c">test_getlogin.c</a>
 
+<h2 id=ch_8.16>
+    进程调度
+</h2>
+
+nice值越小，优先级越高。nice取值在-NZERO ~ NZERO-1之间。默认取值是0。NZERO的典型取值是20。
+
+```c
+#include <unistd.h>
+int nice(int incr);
+
+返回值：若成功，返回新的nice值。出错，返回-1。
+功能：incr 被增加到调用进程的 nice 值上。
+      如果incr过大或者过小，将会被自动调整到合理取值。
+      具有root权限才可以降低nice值。
+      所以普通进程降低nice值的操作是不可逆的（Linux）。
+```
+
+注意：由于-1可能是调用成功的返回值。所以，调用之前要清除errno。如果返回-1，同时检查errno的取值是否为0。
+
+```c
+#include <sys/resource.h>
+
+int getpriority(int which, id_t who);
+返回值：成功返回 -NZERO ~ NZERO-1；出错返回-1。
+形参说明：
+    which参数控制who参数是如何解释的。
+    who参数选择感兴趣的一个或多个进程。
+
+    which 的可能取值有 PRIO_PROCESS PRIO_PGRP PRIO_USER。
+
+int setpriority(int which, id_t who, int value);
+返回值：成功返回0，出错返回-1。
+功能：为进程、进程组和属于特定用户ID的所有进程设置优先级。
+形参说明：
+    which：与getpriority相同。
+    who：与getpriority相同。
+    value：新的nice值，而非增量。
+```
+
+子进程是否继承父进程的nice值取决于实现。Linux子进程从父进程中继承nice值。
+
 ---
 
 [章节目录](../../README.md#title_ch08 "返回章节目录")
