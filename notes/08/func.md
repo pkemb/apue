@@ -178,6 +178,12 @@
         <td>更改有效组ID</td>
     </tr>
     <tr>
+        <td>28</td>
+        <td>int system(const char *cmdstring);</td>
+        <td>stdlib.h</td>
+        <td>在程序中执行一个命令字符串。</td>
+    </tr>
+    <tr>
         <td>序号</td>
         <td>函数原型</td>
         <td>头文件</td>

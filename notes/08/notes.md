@@ -542,6 +542,8 @@ euid: root
 假如suid_test调用system函数执行程序program，默认情况下，exec不改变ruid和euid，所以特权会被继承下来。
 ```
 
+示例代码：<a href="code/test_system.c">test_system.c</a>
+
 ---
 
 [章节目录](../../README.md#title_ch08 "返回章节目录")
