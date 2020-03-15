@@ -12,6 +12,7 @@ PROGS += test_waitpid
 PROGS += test_waitid
 PROGS += test_exec
 PROGS += test_system
+PROGS += test_getlogin
 
 all: ${PROGS}
 
