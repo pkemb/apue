@@ -61,6 +61,14 @@
 
 > 本章介绍UNIX系统的进程控制，包括创建新进程、执行程序和进程终止。
 
+<h2 id=title_ch09>
+    <a href="notes/09/notes.md">
+        第09章 进程关系
+    </a>
+</h2>
+
+> 本章将更详细地说明进程组以及POSIX.1引入的会话的概念。还将介绍登录shell（登录时所调用的）和所有从登录shell启动的进程之间的关系。
+
 <h2 id=title_layout_err>
     <a href="notes/layout_err.md">
         排版错误记录
