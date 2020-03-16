@@ -12,6 +12,24 @@
         <th>序号</th><th>函数原型</th><th>头文件</th><th>说明</th>
     </tr>
     <tr>
+        <td>1</td>
+        <td>pid_t getpgrp(void);</td>
+        <td>unistd.h</td>
+        <td>返回调用进程的进程组ID。</td>
+    </tr>
+    <tr>
+        <td>2</td>
+        <td>pid_t getpgid(pid_t pid);</td>
+        <td>unistd.h</td>
+        <td>返回进程组ID。</td>
+    </tr>
+    <tr>
+        <td>3</td>
+        <td>int setpgid(pid_t pid, pid_t pgid);</td>
+        <td>unistd.h</td>
+        <td>加入一个现有进程组，或创建一个新进程组。</td>
+    </tr>
+    <tr>
         <td>序号</td>
         <td>函数原型</td>
         <td>头文件</td>
