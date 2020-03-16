@@ -608,6 +608,39 @@ int setpriority(int which, id_t who, int value);
 
 测试代码：<a href="code/test_nice.c">test_nice.c</a>
 
+<h2 id=ch_8.17>
+    进程时间
+</h2>
+
+* 墙上时钟时间：又称为时钟时间，是进程运行的时间总量。
+* 用户CPU时间：执行用户指令所用的时间量。
+* 系统CPU时间：执行内核程序所用的时间量。
+
+```c
+#include <sys/times.h>
+
+clock_t times(struct tms *buf);
+
+功能：获取进程自己，以及终止子进程的三个时间。
+返回值：成功：返回流逝的墙上时钟时间；
+       出错：返回-1。
+
+struct tms {
+    clock_t tms_utime;      /* user CPU time */
+    clock_t tms_stime;      /* system CPU time */
+    clock_t tms_cutime;     /* user CPU time, terminated children */
+    clock_t tms_cstime;     /* systme CPU time, terminated children */
+};
+```
+
+说明：
+* 返回的时间均以时钟滴答数为单位，都用_SC_CLK_TCK转换成秒数。
+> 由  sysconf 函数返回的每秒时钟滴答数。
+* 返回的时间不能使用其绝对值，需使用其相对值。
+> 调用times保存返回值。过一段时间再次调用times。新返回值减去就返回值即可。
+
+TODO: 可以尝试阅读`time`命令的实现。
+
 ---
 
 [章节目录](../../README.md#title_ch08 "返回章节目录")
