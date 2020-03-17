@@ -113,6 +113,33 @@ pid_t getsid(pid_t pid);
 
 *关于getpass，终端回显被关闭的部分，没看懂。*
 
+<h2 id=ch_9.7>
+    函数tcgetpgrp、tcsetpgrp、tcgetsid
+</h2>
+
+```c
+#include <unistd.h>
+
+pid_t tcgetpgrp(int fd);
+返回值：返回前台进程组ID。若出错，返回-1。
+
+int tcsetpgrp(int fd, pid_t pgrpid);
+返回值：成功返回0，出错返回-1。
+功能：将前台进程组ID设置为pgrpid。
+
+形参说明：
+    fd：该会话的控制终端。
+    pgrpid：前台进程组ID。
+```
+
+```c
+#include <termios.h>
+
+pid_t tcgetsid(int fd);
+功能：返回会话首进程的进程组ID；出错返回-1。
+形参fd：控制TTY的文件描述符。
+```
+
 ---
 
 [章节目录](../../README.md#title_ch08 "返回章节目录")

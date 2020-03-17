@@ -42,6 +42,24 @@
         <td>获取会话首进程的进程组ID。</td>
     </tr>
     <tr>
+        <td>6</td>
+        <td>pid_t tcgetpgrp(int fd);</td>
+        <td>unistd.h</td>
+        <td>获取前台进程组ID。</td>
+    </tr>
+    <tr>
+        <td>7</td>
+        <td>int tcsetpgrp(int fd, pid_t pgrpid);</td>
+        <td>unistd.h</td>
+        <td>设置前台进程组ID。</td>
+    </tr>
+    <tr>
+        <td>8</td>
+        <td>pid_t tcgetsid(int fd);</td>
+        <td>termios.h</td>
+        <td>获取会话首进程的进程组ID。</td>
+    </tr>
+    <tr>
         <td>序号</td>
         <td>函数原型</td>
         <td>头文件</td>
