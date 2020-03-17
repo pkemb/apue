@@ -30,6 +30,18 @@
         <td>加入一个现有进程组，或创建一个新进程组。</td>
     </tr>
     <tr>
+        <td>4</td>
+        <td>pid_t setsid(void);</td>
+        <td>unistd.h</td>
+        <td>建立一个新会话。</td>
+    </tr>
+    <tr>
+        <td>5</td>
+        <td>pid_t getsid(pid_t pid);</td>
+        <td>unistd.h</td>
+        <td>获取会话首进程的进程组ID。</td>
+    </tr>
+    <tr>
         <td>序号</td>
         <td>函数原型</td>
         <td>头文件</td>
