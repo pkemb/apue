@@ -4,7 +4,7 @@ CFLAGS = -I../.. -Wall
 LDFLAGS = 
 LDLIBS =
 
-PROGS += 
+PROGS += test_signal
 
 all: ${PROGS}
 

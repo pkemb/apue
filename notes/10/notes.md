@@ -131,6 +131,8 @@ exec调用：
 fork调用：
 * 子进程继承父进程的信号处理方式。因为信号捕捉函数的地址在子进程中是有意义的。
 
+示例代码：<a href="code/test_signal.c">test_signal.c</a>
+
 ---
 
 [章节目录](../../README.md#title_ch10 "返回章节目录")
