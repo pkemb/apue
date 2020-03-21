@@ -102,6 +102,35 @@
     </tr>
 </table>
 
+<h2 id=ch_10.3>
+    函数signal
+</h2>
+
+```c
+#include <signal.h>
+typedef void Sigfunc(int);
+Sigfunc *signal(int signo, Sigfunc *func);
+返回值：若成功，返回以前的信号处理方式；出错返回SIG_ERR。
+功能：指定信号signo的处理方式func。
+形参说明：
+    signo：信号名。
+    func：
+        常量 SIG_IGN：忽略此信号。
+        常量 SIG_DFL：系统默认动作。
+        信号处理函数的地址：调用该函数
+注意：
+    signal的语义与实现有关，所以最好使用sigaction函数代替signal。
+```
+
+信号处理程序：返回值为void，带一个int类型的形参，其值为当前处理的信号。
+
+signal需要改变信号的处理方式，才能确定型号的当前处理方式。而sigaction没有此限制。
+
+exec调用：
+* 将原先设置为要捕捉的信号都更改为默认动作。因为信号捕捉函数的地址在新程序中很可能无效。
+fork调用：
+* 子进程继承父进程的信号处理方式。因为信号捕捉函数的地址在子进程中是有意义的。
+
 ---
 
 [章节目录](../../README.md#title_ch10 "返回章节目录")
