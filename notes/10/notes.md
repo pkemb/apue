@@ -133,6 +133,12 @@ fork调用：
 
 示例代码：<a href="code/test_signal.c">test_signal.c</a>
 
+<h2 id=ch_10.4>
+    不可靠信号
+</h2>
+
+
+
 ---
 
 [章节目录](../../README.md#title_ch10 "返回章节目录")
