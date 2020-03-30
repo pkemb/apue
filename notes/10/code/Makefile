@@ -5,6 +5,7 @@ LDFLAGS =
 LDLIBS =
 
 PROGS += test_signal
+PROGS += test_kill
 
 all: ${PROGS}
 
