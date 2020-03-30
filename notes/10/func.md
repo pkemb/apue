@@ -18,6 +18,18 @@
         <td>设置信号处理程序。</td>
     </tr>
     <tr>
+        <td>2</td>
+        <td>int kill(pid_t pid, int signo);</td>
+        <td>signal.g</td>
+        <td>向进程或进程组发送信号。</td>
+    </tr>
+    <tr>
+        <td>3</td>
+        <td>int raise(int signo);</td>
+        <td>signal.h</td>
+        <td>向调用进程发送信号。</td>
+    </tr>
+    <tr>
         <td>序号</td>
         <td>函数原型</td>
         <td>头文件</td>
