@@ -9,10 +9,10 @@ static void sig_alrm(int signo)
     longjmp(env_alrm, 1);
 }
 
-unisgned int sleep1(unsigned int seconds)
+unsigned int sleep2(unsigned int seconds)
 {
     int pre_seconds;
-    void (*old_sig_alrm)(int) = signal(SIGALARM, sig_alrm);
+    void (*old_sig_alrm)(int) = signal(SIGALRM, sig_alrm);
     if (old_sig_alrm == SIG_ERR)
         return seconds;
     
@@ -22,5 +22,9 @@ unisgned int sleep1(unsigned int seconds)
         pause();
     }
     
-    return (alarm(0));
+    signal(SIGALRM, old_sig_alrm);
+    if (pre_seconds > seconds)
+        return alarm(pre_seconds - seconds);
+    else
+        return (alarm(0));
 }

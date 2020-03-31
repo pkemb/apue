@@ -317,7 +317,18 @@ int pause(void);
   * 解决方法1：使用setjmp
   * 解决方法2：使用sigprocmask和sigsuspend
 
-```
+[示例二：sleep2](code/sleep2.c)
+
+* 问题：涉及与其他信号的交互。
+* 如果SIGALRM中断了某个其他信号处理程序，则调用longjmp会提早终止该信号处理程序。
+* [test_sleep2.c](code/test_sleep2.c)的调用栈如下：
+* 调用栈向上增长，左边是事件。
+* 在5s钟内键入Ctrl+C，并且保证 sig_int() 执行的时间大于5s。
+* 当定时器超时之后，sig_alrm()调用longjmp()，直接跳过了sig_int()的栈帧。
+
+![test_sleep2.c调用栈](pic/test_sleep2_call_stack.png)
+
+---
 
 [章节目录](../../README.md#title_ch10 "返回章节目录")
 [函数表](func.md "进入函数表")
