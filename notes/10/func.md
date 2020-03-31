@@ -30,6 +30,18 @@
         <td>向调用进程发送信号。</td>
     </tr>
     <tr>
+        <td>4</td>
+        <td>unsigned int alarm(unsigned int seconds);</td>
+        <td>unistd.h</td>
+        <td>设置闹钟时间，并返回之前的剩余时间。</td>
+    </tr>
+    <tr>
+        <td>5</td>
+        <td>int alarm(void);</td>
+        <td>unistd.h</td>
+        <td>使进程挂起直至捕捉到一个信号。</td>
+    </tr>
+    <tr>
         <td>序号</td>
         <td>函数原型</td>
         <td>头文件</td>
