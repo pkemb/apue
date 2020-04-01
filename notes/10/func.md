@@ -42,6 +42,36 @@
         <td>使进程挂起直至捕捉到一个信号。</td>
     </tr>
     <tr>
+        <td>6</td>
+        <td>int sigemptyset(sigset_t *set);</td>
+        <td>signal.h</td>
+        <td>删除所有信号。</td>
+    </tr>
+    <tr>
+        <td>7</td>
+        <td>int sigfillset(sigset_t *set);</td>
+        <td>signal.h</td>
+        <td>添加所有信号。</td>
+    </tr>
+    <tr>
+        <td>8</td>
+        <td>int sigaddset(sigset_t *set, int signo);</td>
+        <td>signal.h</td>
+        <td>添加信号。</td>
+    </tr>
+    <tr>
+        <td>9</td>
+        <td>int sigdelset(sigset_t *set, int signo);</td>
+        <td>signal.h</td>
+        <td>删除信号。</td>
+    </tr>
+    <tr>
+        <td>10</td>
+        <td>int sigismember(sigset_t *set, int signo);</td>
+        <td>signal.h</td>
+        <td>测试信号。</td>
+    </tr>
+    <tr>
         <td>序号</td>
         <td>函数原型</td>
         <td>头文件</td>

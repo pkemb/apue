@@ -336,6 +336,44 @@ alarm还可以对可能阻塞的操作设置时间上限：
 * 对自动重启的系统调用，此方法无效。
 * 也可以使用longjmp，但还是存在与其他信号交互的问题。
 
+<h2 id=ch_10.11>
+    信号集
+</h2>
+
+信号集：`sigset_t`，能表示多个信号的数据结构。
+
+信号集处理函数：
+
+<table>
+    <tr><th>函数原型</th><th>功能</th><th>返回值</th></tr>
+    <tr>
+        <td>int sigemptyset(sigset_t *set);</td>
+        <td>清除所有信号</td>
+        <td rowspan="4">成功返回0，出错返回-1</td>
+    </tr>
+    <tr>
+        <td>int sigfillset(sigset_t *set);</td>
+        <td>添加所有信号</td>
+    </tr>
+    <tr>
+        <td>int sigaddset(sigset_t *set, int signo);</td>
+        <td>添加信号</td>
+    </tr>
+    <tr>
+        <td>int sigdelset(sigset_t *set, int signo);</td>
+        <td>删除信号</td>
+    </tr>
+    <tr>
+        <td>int sigismember(sigset_t *set, int signo)l</td>
+        <td>测试信号</td>
+        <td>若真返回1，若假返回0</td>
+    </tr>
+</table>
+
+注：
+* 程序在使用信号集之前，务必使用sigemptyset()或sigfillset()初始化信号集。
+* 若信号无效，而返回出错，并设置errno=EINVAL。
+
 ---
 
 [章节目录](../../README.md#title_ch10 "返回章节目录")
