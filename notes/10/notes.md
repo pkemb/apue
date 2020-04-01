@@ -374,6 +374,49 @@ alarm还可以对可能阻塞的操作设置时间上限：
 * 程序在使用信号集之前，务必使用sigemptyset()或sigfillset()初始化信号集。
 * 若信号无效，而返回出错，并设置errno=EINVAL。
 
+<h2 id=ch_10.12>
+    函数sigprocmask
+</h2>
+
+信号屏蔽字：当前阻塞而不能递送给该进程的`信号集`。
+
+```c
+int sigprocmask(int how, cosnt sigset_t *set, sigset_t *oset);
+头文件：signal.h
+返回值：成功返回0，出错返回-1。
+功能：检测、更改进程的信号屏蔽字。
+```
+
+形参说明：
+* `oset`返回进程当前的信号屏蔽字，可以为空。
+* 如果`set`为空，`how`将没有意义。
+* `how`决定`set`参数如何解释，如下表：
+
+how | set | 说明
+- | - | -
+SIG_BLOCK | 希望阻塞的附加信号 | 新的信号屏蔽字是当前信号屏蔽字和set的并集
+SIG_UNBLOCK | 希望解除阻塞的信号 | 新的信号屏蔽字是当前信号屏蔽字和set补集的交集
+SIG_SETMASK | 该进程新的信号屏蔽字 | 该进程新的信号屏蔽字
+
+注：
+* 调用sigprocmask后如果有处于未决、未阻塞的信号，在sigprocmask返回之前，至少将其中一个信号递送给进程。
+* sigprocmask仅为单线程进程定义，多线程进程有其他的函数。
+
+<h2 di=ch_10.13>
+    函数sigpending
+</h2>
+
+```c
+int sigpending(sigset_t *set);
+头文件：signal.h
+返回值：成功返回0，出错返回-1。
+功能：返回调用进程阻塞，并且不能递送的信号集。
+```
+
+注意：
+* sigpending()返回的信号集一定处于未决状态。
+* sigprocmask()第三个参数返回的信号集，不一定处于未决状态。
+
 ---
 
 [章节目录](../../README.md#title_ch10 "返回章节目录")

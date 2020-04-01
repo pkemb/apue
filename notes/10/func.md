@@ -72,6 +72,18 @@
         <td>测试信号。</td>
     </tr>
     <tr>
+        <td>11</td>
+        <td>int sigprocmask(int how, const sigset_t *set, sigset_t *oset);</td>
+        <td>signal.h</td>
+        <td>检测、更改进程的信号屏蔽字。</td>
+    </tr>
+    <tr>
+        <td>12</td>
+        <td>int sigpending(sigset_t *set);</td>
+        <td>signal.h</td>
+        <td>返回进程阻塞、并处于未决状态的信号集。</td>
+    </tr>
+    <tr>
         <td>序号</td>
         <td>函数原型</td>
         <td>头文件</td>
