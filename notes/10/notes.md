@@ -328,6 +328,14 @@ int pause(void);
 
 ![test_sleep2.c调用栈](pic/test_sleep2_call_stack.png)
 
+*思考：如何在编程中避免这一点？*
+
+alarm还可以对可能阻塞的操作设置时间上限：
+* 原理：利用alarm产生的信号，中断阻塞的系统调用。
+* 注意alarm和系统调用之间的竞争。
+* 对自动重启的系统调用，此方法无效。
+* 也可以使用longjmp，但还是存在与其他信号交互的问题。
+
 ---
 
 [章节目录](../../README.md#title_ch10 "返回章节目录")
