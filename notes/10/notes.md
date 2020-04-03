@@ -417,6 +417,56 @@ int sigpending(sigset_t *set);
 * sigpending()返回的信号集一定处于未决状态。
 * sigprocmask()第三个参数返回的信号集，不一定处于未决状态。
 
+<h2 id=ch_10.14>
+    函数sigaction
+</h2>
+
+```c
+int sigaction(int signo, const struct sigaction *act, struct sigaction oact);
+头文件：signal.h
+返回值：成功返回0，出错返回-1。
+功能：检查、修改与指定信号相关联的处理动作。用于取代早期的signal函数。
+形参说明：
+    act：非空表示修改信号signo的动作。可以为空。
+    ocat：非空表示获取信号signo的上一个动作。可以为空。
+```
+
+sigaction结构体：
+
+```c
+struct sigaction {
+    void (*sa_handler)(int signo);
+    void (*sa_sigaction)(int signo, siginfo_t *info, void* context);
+    sigset_t sa_mask;
+    int sa_flags;
+};
+```
+
+* sa_handler: 包含一个信号处理程序的地址。
+* sa_sigaction: 一个替代的信号处理程序，`info`是信号产生的原因，`context`是进程上下文。
+> sa_handler 与 sa_sigaction 互斥，由sa_flags决定使用哪一个。
+* sa_mask: 一个信号集，在调用信号处理程序之前，被加入到进程的信号屏蔽字；返回时恢复到原来的值。
+* sa_flags: 指定对信号进行处理的各个选项。
+> * SA_INTERRUPT 中断的系统调用不自动重启
+> * SA_RESTSRT 中断的系统调用自动重启
+> * SA_SIGINFO 使用 sa_sigaction，而不是sa_handler。
+> * SA_NOCLDWAIT 终止的子进程不产生僵尸进程，内核丢弃终止状态。即早期的SIGCLD语义。
+
+结构体 siginfo_t 包含了信号产生原因的有关信息：
+
+```c
+struct siginfo_t {
+    int          si_signo;   /* signal number */
+    int          si_errno;   /* if nonzero, errno value from errno.h */
+    int          si_code;    /* additional info (depends on signal) */
+    pid_t        si_pid;     /* sending process id */
+    uid_t        si_uid;     /* sending process real user id */
+    void        *si_addr;    /* address that caused the fault */
+    int          si_status;  /* exit value or signal number */
+    union sigval si_value;   /* application-specific value */
+}
+```
+
 ---
 
 [章节目录](../../README.md#title_ch10 "返回章节目录")
