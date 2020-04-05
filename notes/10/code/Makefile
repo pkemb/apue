@@ -1,13 +1,14 @@
 
 CC = gcc
 LD = ld
-CFLAGS = -I../.. -Wall
+CFLAGS = -I../.. -Wall -std=c99 -D_POSIX_C_SOURCE=199309L -Wno-unused-variable
 LDFLAGS = 
 LDLIBS =
 
 PROGS += test_signal
 PROGS += test_kill
 PROGS += test_sleep2
+PROGS += test_sigaction
 
 all: ${PROGS} sleep2.o
 
