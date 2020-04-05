@@ -90,6 +90,18 @@
         <td>检查、修改与指定信号相关联的处理动作。</td>
     </tr>
     <tr>
+        <td>14</td>
+        <td>int sigsetjmp(sigjmp_buf env, int savemask);</td>
+        <td>setjmp.h</td>
+        <td>\</td>
+    </tr>
+    <tr>
+        <td>15</td>
+        <td>void siglongjmp(sigjmp_buf env, int val);</td>
+        <td>setjmp.h</td>
+        <td>\</td>
+    </tr>
+    <tr>
         <td>序号</td>
         <td>函数原型</td>
         <td>头文件</td>

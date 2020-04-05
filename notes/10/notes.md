@@ -502,6 +502,26 @@ struct stack_t {
 * 除非特殊地要求老的不可靠语义，应当使用sigaction。
 * sigaction()默认不重启被中断的系统调用，除非说明了SA_RESTART标志。
 
+<h2 id=ch_10.15>
+    函数sigsetjmp和siglongjmp
+</h2>
+
+当调用信号处理程序时，当前信号被自动加入到进程的信号屏蔽字。如果调用longjmp，而不是直接返回，信号屏蔽字可能不会恢复，取决于实现。在信号处理程序中进行非局部返回，应该使用siglongjmp。
+
+```c
+#include <setjmp.h>
+int sigsetjmp(sigjmp_buf env, int savemask);
+返回值：直接调用返回0；从siglongjmp调用返回，返回非0。
+void siglongjmp(sigjmp_buf env, int val);
+```
+
+* savemask 非0，表示sigsetjmp在env中保存进程的当前信号屏蔽字。
+* siglongjmp 从env中恢复保存的信号屏蔽字。
+
+注意点：
+* env必须被sigsetjmp初始化之后，才能调用siglongjmp。
+* 可通过设置全局变量的方式，调用sigsetjmp之后设置全局变量，调用siglongjmp之前检测全局变量。
+
 ---
 
 [章节目录](../../README.md#title_ch10 "返回章节目录")
