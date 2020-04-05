@@ -84,6 +84,12 @@
         <td>返回进程阻塞、并处于未决状态的信号集。</td>
     </tr>
     <tr>
+        <td>13</td>
+        <td>int sigaction(int signo, const struct sigaction *act, struct sigaction *oact);</td>
+        <td>signal.h</td>
+        <td>检查、修改与指定信号相关联的处理动作。</td>
+    </tr>
+    <tr>
         <td>序号</td>
         <td>函数原型</td>
         <td>头文件</td>

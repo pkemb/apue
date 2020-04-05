@@ -464,8 +464,43 @@ struct siginfo_t {
     void        *si_addr;    /* address that caused the fault */
     int          si_status;  /* exit value or signal number */
     union sigval si_value;   /* application-specific value */
-}
+};
+
+union sigval {
+    int sival_int;
+    void *sival_ptr;
+};
 ```
+
+* si_value: 应用程序在传递信号时，传递一个整型或者一个指针。
+* SIGCHLD会设置 si_pid、si_status、si_uid。
+* SIGBUS、SIGILL、SIGFPE、SIGSEGV会设置si_addr、si_errno。
+  * si_addr包含造成故障的根源地址，可能不准确。
+  * si_errno包含错误编号，对应于信号产生的条件，并由实现定义。
+* si_code包含一些额外的信息，不同的信号取值不同，可由实现定义额外的值。
+  * 具体请看[test_sigaction.c](code/test_sigaction.c)。
+
+最后一个形参`context`可被强制转换为`ucontext_t`结构类型，该结构标识信号传递时进程的上下文。至少包含以下字段：
+
+```c
+struct ucontext_t {
+    ucontext_t *uc_link;     /* pointer to context resumed when this context returens */
+    sigset_t    uc_sigmask;  /* signals blocked when this context is active */
+    stack_t     uc_stack;    /* stack used by this context */
+    mcontext_t  uc_mcontext; /* machine-specific representation of saved context */
+};
+
+/* uc_stack字段描述了当前上下文使用的栈，至少包含以下字段 */
+struct stack_t {
+    void  *ss_sp;     /* stack base or pointer */
+    size_t ss_size;   /* stack size */
+    int    ss_flags;  /* flags */
+};
+```
+
+几个注意的点：
+* 除非特殊地要求老的不可靠语义，应当使用sigaction。
+* sigaction()默认不重启被中断的系统调用，除非说明了SA_RESTART标志。
 
 ---
 
