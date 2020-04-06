@@ -108,6 +108,12 @@
         <td>等待信号发生，并恢复信号屏蔽字。</td>
     </tr>
     <tr>
+        <td>17</td>
+        <td>void abort();</td>
+        <td>stdlib.h</td>
+        <td>使调用进程异常终止。</td>
+    </tr>
+    <tr>
         <td>序号</td>
         <td>函数原型</td>
         <td>头文件</td>

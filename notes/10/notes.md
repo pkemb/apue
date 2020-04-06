@@ -552,6 +552,29 @@ int sigsuspend(const sigset_t *sigmask);
 
 如果希望在等待信号的时候，调用其他系统函数，并没有一个很好的解决方法。如果可以使用多线程，可以专门安排一个线程处理信号。
 
+<h2 id=ch_10.17>
+    函数abort
+</h2>
+
+```c
+void abort(void);
+头文件：stdlib.h
+返回值：此函数不会返回。
+功能：向调用进程发送SIGABRT信号，并使进程异常终止。
+```
+
+其他的一些细节：
+* abort()不会理会进程对SIGABRT的阻塞和忽略。
+* 进程捕捉SIGABRT的意图：在进程终止之前由其执行所需的清理操作。
+* 信号处理程序返回之后，abort()仍然不会返回到其调用者。
+* 信号处理程序不返回的方法是调用exit、_exit、_Exit、longjmp、siglongjmp。
+* POSIX.1要求冲洗所有打开的标准I/O流，ISO C没有强制要求。
+
+示例代码：
+* POSIX.1 的[abort()](code/abort.c) 实现。
+* 示例代码：[test_abort.c](code/test_abort.c)
+  * 不从SIGABRT的处理程序返回，而是调用siglongjmp，验证调用进程是否会异常。
+
 ---
 
 [章节目录](../../README.md#title_ch10 "返回章节目录")
