@@ -522,6 +522,36 @@ void siglongjmp(sigjmp_buf env, int val);
 * env必须被sigsetjmp初始化之后，才能调用siglongjmp。
 * 可通过设置全局变量的方式，调用sigsetjmp之后设置全局变量，调用siglongjmp之前检测全局变量。
 
+<h2 id=ch_10.16>
+    函数sigsuspend
+</h2>
+
+信号屏蔽字的作用：
+* 阻塞指定信号，保护不被信号中断的代码临界区。
+* 解除指定信号的阻塞，等待指定的信号发生。
+
+对于第二个作用，一个不太正确的实现方法是：sigprocmask解除阻塞后，立即调用pause。这存在一个隐藏的竞争条件，信号可能在sigprocmask之后，pause之前被发送到进程。对pause而言，这个信号就好像从来没有发生过一样。
+
+解决方法：在一个原子操作中先恢复信号屏蔽字，然后使进程休眠。
+
+```c
+int sigsuspend(const sigset_t *sigmask);
+头文件：signal.h
+返回值：-1，并将errno设置为EINTR。
+功能：进程的信号屏蔽字设置为sigmask指向的值，并挂起进程。
+     捕捉到一个信号，并从信号处理程序返回，则sigsuspend返回。
+     并且信号屏蔽字设置为调用sigsuspend之前的值。
+```
+
+示例：
+* 保护临界区代码。
+* 等待一个信号处理程序设置一个全局变量。
+  * 全局变量最好使用`sig_atomic_t`类型。
+* 用信号实现父、子进程之间的同步。
+  * SIGUSR1用于父进程通知子进程，SIGSUR2用于子进程通知父进程。代码见 [test_sigsuspend.c](code/test_sigsuspend.c)。
+
+如果希望在等待信号的时候，调用其他系统函数，并没有一个很好的解决方法。如果可以使用多线程，可以专门安排一个线程处理信号。
+
 ---
 
 [章节目录](../../README.md#title_ch10 "返回章节目录")

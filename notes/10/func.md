@@ -102,6 +102,12 @@
         <td>\</td>
     </tr>
     <tr>
+        <td>16</td>
+        <td>int sigsuspend(const sigset_t *sigmask);</td>
+        <td>signal.h</td>
+        <td>等待信号发生，并恢复信号屏蔽字。</td>
+    </tr>
+    <tr>
         <td>序号</td>
         <td>函数原型</td>
         <td>头文件</td>
