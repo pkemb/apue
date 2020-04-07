@@ -575,6 +575,36 @@ void abort(void);
 * 示例代码：[test_abort.c](code/test_abort.c)
   * 不从SIGABRT的处理程序返回，而是调用siglongjmp，验证调用进程是否会异常。
 
+<h2 id=ch_10.18>
+    函数system
+</h2>
+
+POSIX.1要求system()忽略SIGINT、SIGQUIT，阻塞SIGCHLD。理由如下：
+* 阻塞SIGCHLD：system函数需要需要获取子进程的终止状态，并将其作为返回值。否则，system创建的子进程结束时，system的调用者可能会误以为自己创建的子进程结束了。
+* 忽略SIGINT、SIGQUIT：这两个信号只应该发送给正在运行的程序。
+
+符号信号要求的实现：[system.c](code/system.c)
+
+system的返回值：
+从实现来看，system的返回值是-1（出错）或wait返回的status，详情可以参考[第8.6节](../08/notes.md#ch_8.6)
+
+wait返回的status有以下取值：
+* normal termination, WIFEXITED
+  * bit15-8: exit status(0-255), shell return value
+  * bit7-0 : 0
+* killed by signal, WIFSIGNALED
+  * bit7   : core dumped flag
+  * bit6-0 : termination signal (!=0)
+* stopped by signal, WIFSTOPPED
+  * bit15-8: stop signal
+  * bit7-0 : 0x7F
+* Continued by signal, WIFCONTINUED
+  * bit15-0: 0xFFFF
+
+注意：
+* 使用system函数的程序，一定要正确地解释返回值。
+* 如果直接调用fork exec 和 wait，则终止状态与调用system是不同的。
+
 ---
 
 [章节目录](../../README.md#title_ch10 "返回章节目录")
