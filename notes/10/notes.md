@@ -586,7 +586,9 @@ POSIX.1要求system()忽略SIGINT、SIGQUIT，阻塞SIGCHLD。理由如下：
 符号信号要求的实现：[system.c](code/system.c)
 
 system的返回值：
-从实现来看，system的返回值是-1（出错）或wait返回的status，详情可以参考[第8.6节](../08/notes.md#ch_8.6)
+从实现来看，system的返回值是-1（出错）或wait返回的status，详情可以参考[第8.6节](../08/notes.md#ch_8.6)。
+
+注：WIFEXITED(status)为真，且WEXITSTATUS(status)为0，表示执行成功。
 
 wait返回的status有以下取值：
 * normal termination, WIFEXITED
