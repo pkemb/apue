@@ -679,9 +679,54 @@ int sigqueue(pid_t pid, int signo, const union sigval value);
 * sigqueue 只能把信号发送给单个进程。
 * 信号不能被无限排队，最大值是SIGQUEUE_MAX。
 
-用于引用程序的独立信号集：SIGRTMIN ~ SIGRTMAX 之间，包括这两个限制值。
+用于应用程序的独立信号集：SIGRTMIN ~ SIGRTMAX 之间，包括这两个限制值。
 
 示例代码：[test_sigqueue.c](code/test_sigqueue.c)
+
+<h2 id=ch_10.21>
+    作业控制信号
+</h2>
+
+以下六个信号与作业控制有关：
+
+<table>
+    <tr><th>信号</th><th>说明</th><th>产生条件</th></tr>
+    <tr>
+        <td>SIGCHLD</td>
+        <td>子进程已停止或终止。</td>
+        <td></td>
+    </tr>
+    <tr>
+        <td>SIGCONT</td>
+        <td>如何进程已停止，则使其继续运行。</td>
+        <td>通知shell在前台或后台恢复运行一个作业时，shell向该作业的所有进程发送此信号。</td>
+    </tr>
+    <tr>
+        <td>SIGSTOP</td>
+        <td>停止信号（不能被忽略或捕捉。</td>
+        <td></td>
+    </tr>
+    <tr>
+        <td>SIGTSTP</td>
+        <td>交互式停止信号。</td>
+        <td>输入Ctrl+Z时，此信号送至前台进程组的所有进程。</td>
+    </tr>
+    <tr>
+        <td>SIGTTIN</td>
+        <td>后台进程组成员读控制终端。</td>
+        <td></td>
+    </tr>
+    <tr>
+        <td>SIGTTOU</td>
+        <td>后天进程组成员写控制终端。</td>
+        <td></td>
+    </tr>
+</table>
+
+注：
+* 作业控制信号之间有某些交互。
+  * 产生停止信号（SIGTSTP、SIGSTOP、SIGTTIN、SIGTTOU）中的任何一个时，未决的SIGCONT信号就被丢弃。
+  * 产生SIGCONT信号时，未决的停止信号就被丢弃。
 
 ---
 
