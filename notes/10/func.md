@@ -114,6 +114,24 @@
         <td>使调用进程异常终止。</td>
     </tr>
     <tr>
+        <td>18</td>
+        <td>unsigned int sleep(unsigned int seconds);</td>
+        <td>unistd.h</td>
+        <td>挂起调用进程，直到时间超时或被信号中断。</td>
+    </tr>
+    <tr>
+        <td>19</td>
+        <td>int nanosleep(const struct timespec *reqtp, struct timespec *remtp);</td>
+        <td>time.h</td>
+        <td>提供纳秒的时间进度。如果系统不支持，则会取整。</td>
+    </tr>
+    <tr>
+        <td>20</td>
+        <td>int clock_nanosleep(clockid_t clock_id, int flags, const struct timespec *reqtp, struct timespec *remtp);</td>
+        <td>time.h</td>
+        <td>针对特定时钟挂起进程。</td>
+    </tr>
+    <tr>
         <td>序号</td>
         <td>函数原型</td>
         <td>头文件</td>

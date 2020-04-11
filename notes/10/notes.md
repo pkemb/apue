@@ -607,6 +607,57 @@ wait返回的status有以下取值：
 * 使用system函数的程序，一定要正确地解释返回值。
 * 如果直接调用fork exec 和 wait，则终止状态与调用system是不同的。
 
+<h2 id=ch_10.19>
+    函数sleep、nanosleep和clock_nanosleep
+</h2>
+
+```c
+unsigned int sleep(unsined int seconds);
+头文件：unistd.h
+返回值：0或未休眠完的秒数
+功能：使调用进程被挂起直到满足下面两个条件之一：
+      1. 已经过了seconds所指定的墙上时钟时间。
+      2. 调用进程捕捉到一个函数并从信号处理程序返回。
+```
+
+注：可以使用alarm()实现sleep()函数，但不是必要的，因为这两个函数之间可能相互影响。一般使用nanosleep()实现sleep()。
+
+```c
+int nanosleep(const struct timespec *reqtp, struct timespec *remtp);
+头文件：time.h
+返回值：若休眠到要求的时间，返回0；若出错，返回-1。
+功能：与sleep()类似，但是提供了纳秒级别的精度。
+形参说明：
+    reqtp: 需要休眠的时间长度。
+    remtp: 未休眠完的时间长度，可以为NULL。
+```
+
+注意：
+* 如果系统不支持精确到纳秒，要求的时间就会取整。
+* 结构体[struct timespec](../04/type.md#struct_timespec)的定义。
+
+```c
+int clock_nanosleep(clockid_t clock_id, int flags, 
+                    cont struct timepsec *reqtp, struct timespec *remtp);
+头文件：time.h
+返回值：若休眠到要求的时间，返回0；若出错，返回错误码。
+功能：使用相对于特定时钟的延迟时间来挂起调用进程。
+形参说明：
+    clock_id: 指定了计算延迟时间基于的时钟。
+              CLOCK_REALTIME              实时系统时间
+              CLOCK_MONOTONIC             不带负跳数的实时系统时间
+              CLOCK_PROCESS_CPUTIME_ID    调用进程的CPU时间
+              CLOCK_THREAD_CPUTIME_ID     调用线程的CPU时间
+    flags: 控制延迟是相对的还是绝对的。
+           0: 休眠时间是相对的，例如希望休眠的时间长度。
+           TIMER_ABSTIME: 休眠时间是绝对的，例如希望休眠到某个特定的时间。
+```
+
+注：
+* 使用绝对时间时，remtp参数没有使用。
+* 调用 clock_nanosleep(CLOCK_REALTIME, 0, reqtp, remtp) 和调用 nanosleep(reqtp, remtp) 的效果是相同的，除了出错返回。
+* 相对休眠时间会导致实际休眠时间比要求的长，绝对休眠时间好一些。
+
 ---
 
 [章节目录](../../README.md#title_ch10 "返回章节目录")
