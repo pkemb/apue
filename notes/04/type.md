@@ -38,3 +38,16 @@ struct stat{
 	<img src="pic/stat结构体.png" align=center />
 	<p>stat结构体成员及其对应的函数</p>
 </div>
+
+<h2 id=struct_timespec>
+    结构体timespec
+</h2>
+
+至少包含以下两个字段：
+
+```c
+struct timespec {
+    time_t tv_sec;
+    long   tv_nsec;
+};
+```
