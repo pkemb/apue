@@ -132,6 +132,12 @@
         <td>针对特定时钟挂起进程。</td>
     </tr>
     <tr>
+        <td>21</td>
+        <td>int sigqueue(pid_t pid, int signo, union sigal value);</td>
+        <td>signal.h</td>
+        <td>向进程发送一个可排队的信号。</td>
+    </tr>
+    <tr>
         <td>序号</td>
         <td>函数原型</td>
         <td>头文件</td>

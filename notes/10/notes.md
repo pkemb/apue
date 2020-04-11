@@ -658,6 +658,31 @@ int clock_nanosleep(clockid_t clock_id, int flags,
 * 调用 clock_nanosleep(CLOCK_REALTIME, 0, reqtp, remtp) 和调用 nanosleep(reqtp, remtp) 的效果是相同的，除了出错返回。
 * 相对休眠时间会导致实际休眠时间比要求的长，绝对休眠时间好一些。
 
+<h2 id=ch_10.20>
+    函数sigqueue
+</h2>
+
+在大部分UNIX系统不对信号排队，在POSIX.1的实时扩展中，有些系统开始增加对信号排队的支持。
+
+使用信号排队必须做以下几个操作：
+* 使用sigaction()函数安装信号处理程序时指定SA_SIGINFO标志。
+* 在 sigaction结构的sa_sigaction成员中提供信号处理程序。
+* 使用sigqueue函数发送信号。
+
+```C
+int sigqueue(pid_t pid, int signo, const union sigval value);
+头文件：signal.h
+返回值：成功返回0，出错返回-1。
+```
+
+注意：
+* sigqueue 只能把信号发送给单个进程。
+* 信号不能被无限排队，最大值是SIGQUEUE_MAX。
+
+用于引用程序的独立信号集：SIGRTMIN ~ SIGRTMAX 之间，包括这两个限制值。
+
+示例代码：[test_sigqueue.c](code/test_sigqueue.c)
+
 ---
 
 [章节目录](../../README.md#title_ch10 "返回章节目录")
