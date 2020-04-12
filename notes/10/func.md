@@ -138,9 +138,33 @@
         <td>向进程发送一个可排队的信号。</td>
     </tr>
     <tr>
-        <td>序号</td>
-        <td>函数原型</td>
-        <td>头文件</td>
-        <td>说明</td>
+        <td>22</td>
+        <td>void psignal(int signo, char *msg);</td>
+        <td>signal.h</td>
+        <td>输出msg和信号说明到标准错误。</td>
+    </tr>
+    <tr>
+        <td>23</td>
+        <td>void psiginfo(const siginfo_t *info, const char *msg);</td>
+        <td>signal.h</td>
+        <td>输出msg和siginfo_t说明到标准错误。</td>
+    </tr>
+    <tr>
+        <td>24</td>
+        <td>char *strsignal(int signo);</td>
+        <td>string.h</td>
+        <td>获取信号的说明字符串。</td>
+    </tr>
+    <tr>
+        <td>25</td>
+        <td>int sig2str(int singo, char *str);</td>
+        <td>signal.h</td>
+        <td>将信号编号转换为不带SIG前缀的信号名。</td>
+    </tr>
+    <tr>
+        <td>26</td>
+        <td>int str2sig(const char *str, int *signop);</td>
+        <td>signal.h</td>
+        <td>将不带SIG前缀的信号名，或十进制信号编号的字符串，转换为信号编号。</td>
     </tr>
 </table>

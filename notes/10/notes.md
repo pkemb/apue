@@ -728,6 +728,58 @@ int sigqueue(pid_t pid, int signo, const union sigval value);
   * 产生停止信号（SIGTSTP、SIGSTOP、SIGTTIN、SIGTTOU）中的任何一个时，未决的SIGCONT信号就被丢弃。
   * 产生SIGCONT信号时，未决的停止信号就被丢弃。
 
+<h2 id=ch_10.22>
+    信号名和编号
+</h2>
+
+信号编号和信号名之间的映射方法：
+
+1. 使用数组 sys_siglist，数组下标是信号编号，数组中的元素是指向信号名字符串的指针。
+
+```c
+extern char *sys_siglist[];
+```
+
+2. psignal函数可移植地打印与信号编号对应的字符串，与perror类似。 
+```c
+
+void psignal(int signo, const char *msg);
+头文件：signal.h
+功能：打印msg和信号说明到标准错误。
+```
+
+3. 在sigaction信号处理程序中，打印siginfo结构。
+
+```c
+void psiginfo(const siginfo_t *info, const char *msg);
+头文件：signal.h
+功能：打印msg和siginfo_t的说明到标准错误。
+```
+
+4. strsignal只获取信号的字符描述部分，与strerror类似。
+
+```c
+char *strsignal(int signo);
+头文件：string.h
+返回值：指向描述该信号的字符串的指针。若信号不存在，不同的实现行为不一样。
+```
+
+5. 一对信号编号和信号名的映射函数，在交互式程序中有用。
+
+```c
+int sig2str(int signo, char *str);
+int str2sig(const char *str, int *signop);
+头文件：signal.h
+返回值：成功返回0，出错返回-1。
+注意：
+    信号转字符串，必须提供足够大的缓冲区，包括NULL字节。建议使用常量SIG2STR_MAX。
+    转换之后的信号不带SIG。例如SIGKILL翻译为KILL。
+
+    字符串转信号，需提供不带SIG的信号名称，或十进制信号编号的字符串。
+```
+
+示例代码：[test_signo.c](code/test_signo.c)
+
 ---
 
 [章节目录](../../README.md#title_ch10 "返回章节目录")
