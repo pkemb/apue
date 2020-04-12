@@ -12,6 +12,7 @@ PROGS += test_sigaction
 PROGS += test_abort
 PROGS += test_system
 PROGS += test_sigqueue
+PROGS += test_signo
 
 all: ${PROGS} sleep2.o
 
