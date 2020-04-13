@@ -42,6 +42,30 @@
 * 也称为`pthread`，或`POSIX线程`
 * 测试宏：_POSIX_THREAD
 
+<h2 id=ch_11.3>
+    线程标识
+</h2>
+
+线程ID：tid
+* 只在线程所属进程的上下文中才有意义。
+* 数据类型：`pthread_t`
+* `pthread_t`可能是结构，或者是整数，取决于实现。
+* 没有一种可移植的方式打印线程ID。
+
+```c
+int pthread_equal(pthread_t tid1, pthread_t tid2);
+功能：比较两个线程ID是否相等。
+头文件：pthread.h
+返回值：相等返回非0数值，否则返回0。
+
+pthread_t pthread_self(void);
+功能：获取自身的线程ID。
+头文件：pthread.h
+返回值：调用线程的线程ID。
+```
+
+
+
 ---
 
 [章节目录](../../README.md#title_ch11 "返回章节目录")
