@@ -24,6 +24,15 @@
         <td>获取调用线程的线程ID。</td>
     </tr>
     <tr>
+        <td>3</td>
+        <td>int pthread_create(pthread_t *tidp,<br>
+            const pthred_attr_t *attr,<br>
+            void *(*start_rtn)(void*),<br>
+            void *arg);</td>
+        <td>pthread.h</td>
+        <td>创建一个新线程。</td>
+    </tr>
+    <tr>
         <td>序号</td>
         <td>函数原型</td>
         <td>头文件</td>
