@@ -69,6 +69,9 @@
         <td>分离线程。</td>
     </tr>
     <tr>
+        <th colspan="4">互斥量原语</th>
+    </tr>
+    <tr>
         <td>10</td>
         <td>int pthread_mutex_init(pthread_mutex_t *mutex,<br>
             const struct pthread_mutexattr_t *attr);</td>
@@ -105,6 +108,64 @@
             const struct timespec *tsptr);</td>
         <td>pthread.h<br>time.h</td>
         <td>在指定的时间之前加锁。</td>
+    </tr>
+    <tr>
+        <th colspan="4">读写锁原语</th>
+    </tr>
+    <tr>
+        <td>16</td>
+        <td>int pthread_rwlock_init(pthread_rwlock_t *rwlock<br>
+            pthread_rwlockattr_t *attr);</td>
+        <td>pthread.h</td>
+        <td>初始化读写锁。</td>
+    </tr>
+    <tr>
+        <td>17</td>
+        <td>pthread_rwlock_destroy(pthread_rwlock_t *rwlock);</td>
+        <td>pthread.h</td>
+        <td>销毁读写锁。</td>
+    </tr>
+    <tr>
+        <td>18</td>
+        <td>int pthread_rwlock_unlock(pthread_rwlock_t *rwlock);</td>
+        <td>pthread.h</td>
+        <td>释放读写锁。</td>
+    </tr>
+    <tr>
+        <td>19</td>
+        <td>int pthread_rwlock_rdlock(pthread_rwlock_t *rwlock);</td>
+        <td>pthread.h</td>
+        <td>读加锁。</td>
+    </tr>
+    <tr>
+        <td>20</td>
+        <td>int pthread_rwlock_wrlock(pthread_rwlock_t *rwlock);</td>
+        <td>pthread.h</td>
+        <td>写加锁。</td>
+    </tr>
+    <tr>
+        <td>21</td>
+        <td>int pthread_rwlock_tryrdlock(pthread_rwlock_t *rwlock);</td>
+        <td>pthread.h</td>
+        <td>尝试读加锁。</td>
+    </tr>
+    <tr>
+        <td>22</td>
+        <td>int pthread_rwlock_trywrlock(pthread_rwlock_t *rwlock);</td>
+        <td>pthread.h</td>
+        <td>尝试写加锁。</td>
+    </tr>
+    <tr>
+        <td>23</td>
+        <td>int pthread_rwlock_timedrdlock(pthread_rwlock_t *rwlock);</td>
+        <td>thread.h</td>
+        <td>在指定的时间之前读加锁。</td>
+    </tr>
+    <tr>
+        <td>24</td>
+        <td>int pthread_rwlock_timedwrlock(pthread_rwlock_t *rwlock);</td>
+        <td>pthread.h</td>
+        <td>在指定的时间之前写加锁。</td>
     </tr>
     <tr>
         <td>序号</td>

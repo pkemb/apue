@@ -273,6 +273,55 @@ int pthread_mutex_timedlock(pthread_mutex_t *mutex, const struct timespec *tsptr
     读写锁
 </h3>
 
+读写锁与互斥量类似，适用于读远大于写的情况。有三种状态：写加锁、读加锁、不加锁
+* 一次只有一个线程可以占有写模式的读写锁。
+  * 写加锁状态时，所有试图加锁的线程都会被阻塞，直到写锁被释放。
+* 多个线程可以同时占有读模式的读写锁。
+  * 读加锁状态时，读模式进行加锁的线程可以得到访问。写模式加锁的线程会被阻塞，直到所有的读锁释放。
+* 处于读模式状态时，某个线程试图以写模式加锁，系统**可能**会阻塞后续的读模式加锁，避免写模式请求一直得不到响应。
+
+读写锁也叫做共享互斥锁
+* `读模式`可以说成`共享模式`
+* `写模式`可以说成`互斥模式`
+
+数据类型：pthread_rwlock_t
+
+读写锁原语：
+
+```c
+int pthread_rwlock_init(pthread_rwlock_t *rwlock,
+                        const pthread_rwlockattr_t *attr);
+功能：初始化读写锁，在使用读写锁之前，必须初始化。
+      如果是静态分配，可以使用常量PTHREAD_RWLOCK_INITIALIZER初始化。
+      attr填NULL表示使用默认的属性。
+
+int pthread_rwlock_destroy(pthread_rwlock_t *rwlock);
+功能：销毁读写锁。如果读写锁是动态分配的，在释放内存之前，必须调用此函数。
+
+int pthread_rwlock_unlock(pthread_rwlock_t *rwlock);
+功能：释放读写锁，无论是读模式加锁还是写模式加锁。
+
+int pthread_rwlock_rdlock(pthread_rwlock_t *rwlock);
+功能：读模式下加锁。
+注意：实现可能会限制读锁的共享次数。
+
+int pthread_rwlock_wrlock(pthread_rwlock_t *rwlock);
+功能：写模式下加锁。
+
+/* 条件版本 */
+int pthread_rwlock_tryrdlock(pthread_rwlock_t *rwlock);
+int pthread_rwlock_trywrlock(pthread_rwlock_t *rwlock);
+功能：尝试获取锁，获取失败则返回EBUSY，不会阻塞线程。
+
+/* 超时版本 */
+int pthread_rwlock_timedrdlock(pthread_rwlock_t *rwlock,
+                               const struct timespec *tsptr);
+int pthread_rwlock_timedwrlock(pthread_rwlock_t *rwlock,
+                               const struct timespec *tsptr);
+功能：超过指定时间还没有获取到锁，则返回ETIMEOUT。
+注意：tsptr指定的是绝对时间，而不是相对时间。
+```
+
 <h3 id=cond>
     条件变量
 </h3>
