@@ -69,6 +69,44 @@
         <td>分离线程。</td>
     </tr>
     <tr>
+        <td>10</td>
+        <td>int pthread_mutex_init(pthread_mutex_t *mutex,<br>
+            const struct pthread_mutexattr_t *attr);</td>
+        <td>pthread.h</td>
+        <td>初始化互斥量。</td>
+    </tr>
+    <tr>
+        <td>11</td>
+        <td>int pthread_mutex_destroy(pthread_mutex_t *mutex);</td>
+        <td>pthread.h</td>
+        <td>销毁互斥量。</td>
+    </tr>
+    <tr>
+        <td>12</td>
+        <td>int pthread_mutex_unlock(pthread_mutex_t *mutex);</td>
+        <td>pthread.h</td>
+        <td>解锁</td>
+    </tr>
+    <tr>
+        <td>13</td>
+        <td>int pthread_mutex_lock(pthread_mutex_t *mutex);</td>
+        <td>pthread.h</td>
+        <td>加锁。</td>
+    </tr>
+    <tr>
+        <td>14</td>
+        <td>int pthread_mutex_trylock(pthread_mutex_t *mutex);</td>
+        <td>pthread.h</td>
+        <td>尝试加锁。</td>
+    </tr>
+    <tr>
+        <td>15</td>
+        <td>int pthread_mutex_timedlock(pthread_mutex_t *mutex,<br>
+            const struct timespec *tsptr);</td>
+        <td>pthread.h<br>time.h</td>
+        <td>在指定的时间之前加锁。</td>
+    </tr>
+    <tr>
         <td>序号</td>
         <td>函数原型</td>
         <td>头文件</td>
