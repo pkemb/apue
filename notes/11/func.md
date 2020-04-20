@@ -168,6 +168,49 @@
         <td>在指定的时间之前写加锁。</td>
     </tr>
     <tr>
+        <th colspan="4">条件变量原语</th>
+    </tr>
+    <tr>
+        <td>25</td>
+        <td>int pthread_cond_init(pthread_cond_t *cond,<br>
+            pthread_condattr_t *attr);</td>
+        <td>pthread.h</td>
+        <td>初始化条件变量</td>
+    </tr>
+    <tr>
+        <td>26</td>
+        <td>int pthread_cond_destroy(pthread_cond_t *cond);</td>
+        <td>pthread.h</td>
+        <td>销毁条件变量。</td>
+    </tr>
+    <tr>
+        <td>27</td>
+        <td>int pthread_cond_wait(pthread_cond_t *cond,<br>
+            pthread_mutex_t *mutex);</td>
+        <td>pthread.h</td>
+        <td>等待条件变量为真。</td>
+    </tr>
+    <tr>
+        <td>28</td>
+        <td>int pthread_cond_tindwait(pthread_cond_t *cond,<br>
+            pthread_mutex_t *mutex,<br>
+            const struct timespec *tsptr);</td>
+        <td>pthread.h<br>time.h</td>
+        <td>在规定的时间内等待条件变量为真。</td>
+    </tr>
+    <tr>
+        <td>29</td>
+        <td>int pthread_cond_signal(pthread_cond_t *cond);</td>
+        <td>pthread.h</td>
+        <td>唤醒至少一个等待该条件的线程。</td>
+    </tr>
+    <tr>
+        <td>30</td>
+        <td>int pthread_cond_broadcast(pthread_cond_t *cond);</td>
+        <td>pthread.h</td>
+        <td>唤醒所有等待该条件的线程。</td>
+    </tr>
+    <tr>
         <td>序号</td>
         <td>函数原型</td>
         <td>头文件</td>

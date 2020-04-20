@@ -326,6 +326,43 @@ int pthread_rwlock_timedwrlock(pthread_rwlock_t *rwlock,
     条件变量
 </h3>
 
+条件变量允许线程以无竞争的方式等待特定的条件发生。工作原理如下：
+* 进入等待条件之前，必须先获取互斥量；进程进入睡眠之后释放互斥量。
+* 通知条件发生之前，必须先获取互斥量；通知完毕之后释放互斥量。
+
+通过互斥量对条件的保护，关闭了条件检查和线程进入休眠状态等待条件改变这两个操作之间的时间通道。
+
+数据类型：pthread_cond_t
+
+条件变量原语：
+
+```c
+int pthread_cond_init(pthread_cond_t *cond, const pthread_condattr_t *attr);
+功能：初始化条件变量。如果是静态分配，可以使用PTHREAD_COND_INITIALIZER初始化。
+      attr为NULL表示使用默认属性。
+
+int pthread_cond_destroy(pthread_cond_t *cond);
+功能：销毁条件变量。
+
+/* 等待条件变量 */
+/* 在调用之前，必须锁住互斥量。线程睡眠之后会释放信号量。 */
+/* 返回之后，互斥量会再次被锁住。 */
+int pthread_cond_wait(pthread_cond_t *cond, pthread_mutex_t *mutex);
+功能：等待条件变量变为真。
+
+int pthread_cond_timedwait(pthread_cond_t *cond, pthread_mutex_t *mutex,
+                           const struct timespec *tsptr);
+功能：在指定的时间内等待条件变量变为真。如果超时，返回ETIMEOUT。
+      tsptr指定一个绝对时间，而不是相对时间。
+
+/* 通知条件发生 */
+int pthread_cond_signal(pthread_cond_t *cond);
+功能：通知线程条件已经满足，至少能唤醒一个等待该条件的线程。
+
+int pthread_cond_broadcast(pthread_cond_t *cond);
+功能：唤醒等待该条件的所有的进程。
+```
+
 <h3 id=spin>
     自旋锁
 </h3>
