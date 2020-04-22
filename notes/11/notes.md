@@ -367,6 +367,36 @@ int pthread_cond_broadcast(pthread_cond_t *cond);
     自旋锁
 </h3>
 
+通过忙等使线程处于阻塞的状态，适用于锁被持有的时间短、不希望在重新调度上花费太多的成本。
+
+自旋锁适用于非抢占式的调度算法。
+
+数据类型：pthread_spinlock_t
+
+自旋锁原语：
+
+```c
+int phtread_spin_init(pthread_spinlock_t *lock, int phared);
+功能：初始化自旋锁。pshared表示进程共享属性。
+      PTHREAD_PROCESS_SHARED  自旋锁可以被属于不同进程的线程获取
+      PTHREAD_PROCESS_PRIVATE 自旋锁只能被属于同一个进程的线程获取
+
+int pthread_spin_destroy(pthread_spinlock_t *lock);
+功能：销毁自旋锁。
+
+int pthread_spin_lock(pthread_spinlock_t *lock);
+功能：锁定自旋锁。
+      线程在锁定自旋锁的情况下调用此函数，其行为是未定义的。
+      可能永久自旋，也有可能返回EDEADLK。
+
+int pthread_spin_trylock(pthread_spinlock_t *lock);
+功能：尝试锁定自旋锁。如果不能锁定，立即返回EBUSY。
+
+int pthread_spin_unlock(pthread_spinlock_t *lock);
+功能：解锁自旋锁。
+      如果对未锁定的自旋锁调用此接口，其行为是未定义的。
+```
+
 <h3 id=barrier>
     屏障
 </h3>

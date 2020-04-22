@@ -211,6 +211,39 @@
         <td>唤醒所有等待该条件的线程。</td>
     </tr>
     <tr>
+        <th colspan="4">自旋锁原语</th>
+    </tr>
+    <tr>
+        <td>31</td>
+        <td>int pthread_spin_init(pthread_spinlock_t *lock, int pshread);</td>
+        <td>pthread.h</td>
+        <td>初始化自旋锁</td>
+    </tr>
+    <tr>
+        <td>32</td>
+        <td>int pthread_spin_destroy(pthread_spinlock_t *lock);</td>
+        <td>pthread.h</td>
+        <td>销毁自旋锁</td>
+    </tr>
+    <tr>
+        <td>33</td>
+        <td>int pthread_spin_lock(pthread_spinlock_t *lock);</td>
+        <td>pthread.h</td>
+        <td>锁定自旋锁</td>
+    </tr>
+    <tr>
+        <td>34</td>
+        <td>int pthread_spin_trylock(pthread_spinlock_t *lock);</td>
+        <td>pthread.h</td>
+        <td>尝试锁定自旋锁</td>
+    </tr>
+    <tr>
+        <td>35</td>
+        <td>int pthread_spin_unlock(pthread_spinlock_t *lock);</td>
+        <td>pthread.h</td>
+        <td>解锁自旋锁</td>
+    </tr>
+    <tr>
         <td>序号</td>
         <td>函数原型</td>
         <td>头文件</td>
