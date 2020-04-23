@@ -401,7 +401,29 @@ int pthread_spin_unlock(pthread_spinlock_t *lock);
     屏障
 </h3>
 
+是用户协调多个线程并行工作的同步机制。屏障允许每个线程等待，知道所有的合作线程都到达某一点，然后从该点继续执行。
 
+数据类型：pthread_barrier_t
+
+屏障原语：
+
+```c
+int pthread_barrier_init(pthread_barrier_t *barrier,
+                         const pthread_barrierattr_t *attr,
+                         unsigned int count);
+功能：初始化屏障，attr指定屏障的属性，如果为NULL表示使用默认属性。
+      count表示在所有线程继续运行之前，必须到达屏障的线程数目。
+
+int pthread_barrier_destroy(pthread_barrier_t *barrier);
+功能：反初始化屏障。
+
+int pthread_barrier_wait(pthread_brrier_t *barrier);
+功能：线程已完成工作，等待其他线程到达。
+     最后一个线程调用此函数，就满足了屏障计数，所有的线程都被唤醒。
+      如果返回PTHREAD_BARRIER_SERIAL_THREAD表示可以作为主线程。
+
+      到达了屏障计数值之后，屏障可以被重用。
+```
 
 ---
 

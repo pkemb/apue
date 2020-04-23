@@ -244,9 +244,25 @@
         <td>解锁自旋锁</td>
     </tr>
     <tr>
-        <td>序号</td>
-        <td>函数原型</td>
-        <td>头文件</td>
-        <td>说明</td>
+        <th colspan="4">自旋锁原语</th>
+    </tr>
+    <tr>
+        <td>36</td>
+        <td>int pthread_barrier_init(pthread_barrier_t *barrier,<br>
+            pthread_barrierattr_t *attr, unsigned int count);</td>
+        <td>pthread.h</td>
+        <td>初始化屏障。</td>
+    </tr>
+    <tr>
+        <td>37</td>
+        <td>int pthread_barrier_destroy(pthread_barrier_t *barrier);</td>
+        <td>pthread.h</td>
+        <td>反初始化屏障。</td>
+    </tr>
+    <tr>
+        <td>38</td>
+        <td>int pthread_barrier_wait(pthread_barrier_t *barrier);</td>
+        <td>pthread.h</td>
+        <td>屏障计数加1，并等待屏障计数达到要求。</td>
     </tr>
 </table>
