@@ -72,3 +72,7 @@ nice 取值范围应该是`-NZERO ~ (NZERO-1)`之间，而非`0~(2*NZERO)-1`之�
 ## P280
 
 应该是 `struct siginfo_t`，而不是`struct siginfo`，这是在介绍结构体的定义，不应该省略后面的`_t`。除此之外的多处`siginfo结构`的表述，个人认为是可以接受的。
+
+## P318
+
+图11-6中，是`pthread_cleanup_push`，而不是`pthread_cancel_push`。
