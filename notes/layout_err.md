@@ -76,3 +76,7 @@ nice 取值范围应该是`-NZERO ~ (NZERO-1)`之间，而非`0~(2*NZERO)-1`之�
 ## P318
 
 图11-6中，是`pthread_cleanup_push`，而不是`pthread_cancel_push`。
+
+## P343
+
+函数`pthread_attr_setdetachstate()`的第二个形参有误，是`int detachstate`，而不是`int *detachstate`。
