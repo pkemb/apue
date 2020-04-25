@@ -7,6 +7,8 @@
 
 ---
 
+![](pic/pthread.png)
+
 <h2 id=ch_11.2>
     线程概念
 </h2>
